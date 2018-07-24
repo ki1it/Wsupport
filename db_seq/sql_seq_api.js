@@ -9,4 +9,8 @@
 // //console.log(result);
 //     return result;
 // }
+const db = require('./db_init')
+async function GetManagers() {
+    db()
 
+}
