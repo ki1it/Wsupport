@@ -54,10 +54,6 @@ const messages = sequelize.define('messages', {
     to_id: {
       type: Sequelize.STRING,
       allowNull: true,
-      references: {
-        model: 'list_sup_workers',
-        key: 'tel_number'
-      }
     },
     chat_id: {
       type: DataTypes.BIGINT,
@@ -89,5 +85,5 @@ const list_sup_workers = sequelize.define('list_sup_workers', {
   
 module.exports.list_sup_workers = list_sup_workers
 module.exports.messages = messages;
-module.exports = messages_group;
-module.exports = list_projects;
+module.exports.messages_group = messages_group;
+module.exports.list_projects = list_projects;
