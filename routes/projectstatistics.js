@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* GET statis page. */
 router.get('', function(req, res, next) {
+
         var proj = req.query.proj;
         var srTimeAns = [15, 10];
         var managers = ['loh', 'pidr'];

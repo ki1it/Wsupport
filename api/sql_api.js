@@ -70,6 +70,11 @@ async function GetMessForManagerLs(tel) {
     var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id) from new_schema.messages where from_tp=true and to_id = $1', [tel]);
     return result
 }
+
+async function GetMessForProject(chat_id) {
+    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id) from new_schema.messages where from_tp=true and to_id = $1', [chat_id]);
+    return result
+}
 //console.log(result);
     module.exports.GetProjects = GetProjects
     module.exports.GetManagers = GetManagers
@@ -85,3 +90,4 @@ async function GetMessForManagerLs(tel) {
     module.exports.GetMessForManager = GetMessForManager
     module.exports.GetMessForManagerLs = GetMessForManagerLs
     module.exports.GetManagersByProjectId = GetManagersByProjectId
+    module.exports.GetMessForProject = GetMessForProject

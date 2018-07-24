@@ -21,3 +21,25 @@ script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
 script(src='/javascripts/uikit.min.js')
 script(src='/javascripts/uikit-icons.min.js')
 script(src='/javascripts/main.js')
+
+div(id="modal-center" class="uk-flex-top" uk-modal)
+  div.uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+    button(class="uk-modal-close-default" type="button" uk-close)
+    h3.uk-modal-title
+      b.ru Напишите нам
+      b.en Contact us
+    p.ru И свяжемся с вами в близжайшее время
+    p.en and we will contact you in the shortest time
+    form(class="uk-grid-small" uk-grid)
+      div.uk-width-1-2
+        input(class="uk-input ru name" type="text" placeholder="Имя")
+        input(class="uk-input en name" type="text" placeholder="name")
+      div.uk-width-1-2
+        input(class="uk-input ru email" type="email" placeholder="Почта")
+        input(class="uk-input en email" type="email" placeholder="email")
+      div.uk-width-1-1
+        textarea(class="uk-textarea ru text" rows="5" placeholder="Небольшой текст, вопрос, предложение...")
+        textarea(class="uk-textarea en text" rows="5" placeholder="Some text for us...")
+    button(class="uk-button uk-button-primary top-margin" id="sender" href="#")
+      span.ru Отправить
+      span.en Send
