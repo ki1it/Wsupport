@@ -30,7 +30,7 @@ html(lang='en')
                   th СР. Время ответа, сек
               tbody
                 - for(var i=0; i<managers.rowCount; i++)
-                  +rowTable(managers.rows[i].name, messagesGroup.rows[i].count, messagesLs.rows[i].count, managers.rows[i].count, srTimeAns.rows[i].avg)
+                  +rowTable(managers.name, '-', '-', '-', '-')
 
   
          

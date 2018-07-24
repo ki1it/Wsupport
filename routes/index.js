@@ -1,6 +1,7 @@
 var express = require('express');
 var apitg = require('../api/tg_multi');
-var sql_api = require('../api/sql_api')
+var sql_api = require('../api/sql_api');
+var seq_api = require('../db_seq/sql_seq_api')
 var router = express.Router();
 
 /* GET home page. */

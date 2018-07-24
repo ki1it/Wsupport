@@ -14,6 +14,7 @@ const messages_group = require('./messages_group')
 const messages = require('./messages')
 const list_sup_workers = require('./list_sup_workers')
 const db = require('./db_init')
+
 async function getAllManagers() {
     let res = await list_sup_workers.findAll()
     return res
@@ -22,3 +23,5 @@ async  function getAllProjects(){
     let res = await  list_projects.findAll()
     return res;
 }
+
+module.exports.getAllManagers = getAllManagers()
