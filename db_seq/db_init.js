@@ -2,6 +2,7 @@ const list_projects = require('./list_projects')
 const messages_group = require('./messages_group')
 const messages = require('./messages')
 const list_sup_workers = require('./list_sup_workers')
+const db_models = require
 // const Raffle = require('Raffle')
 
 //list_projects.hasMany(messages_group, { foreignKey:'chat_id', sourceKey:'chat_id',  onUpdate: 'cascade', onDelete: 'cascade' })
