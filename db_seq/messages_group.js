@@ -25,4 +25,4 @@ const messages_group = sequelize.define('messages_group', {
         allowNull: true
     }
 });
-module.exports.messages_group = messages_group;
+module.exports = messages_group;

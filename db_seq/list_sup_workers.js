@@ -15,4 +15,4 @@ const list_sup_workers = sequelize.define('list_sup_workers', {
     }
   });
   
-module.exports.list_sup_workers = list_sup_workers
+module.exports = list_sup_workers
