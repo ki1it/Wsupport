@@ -1,0 +1,37 @@
+doctype
+html(lang='en')
+  head
+    include head.pug
+      mixin ProjSlot(namee, chatID)
+        div(class="uk-width-1-4@m")
+          div(class="uk-card uk-card-default uk-card-small uk-card-body")
+            div(class="uk-width-1-1")
+              h4
+                input(placeholder=namee class="uk-form-blank uk-width-small uk-input")
+            div(uk-grid)
+              div(class="uk-width-1-2@m")
+                a(href="http://t.me/"+chatID) @#{chatID}
+              div(class="uk-width-1-2@m right")
+                a(href="statistics?proj="+chatID)
+                  span(uk-icon="icon:  more-vertical")
+  body
+    div.uk-container
+      include header.pug
+    div.uk-container.main
+      div(uk-grid)
+        div(class="uk-width-1-6@m side-menu")
+          include menu.pug
+        div(class="uk-width-5-6@m")
+          div(uk-grid)
+            - for(var i=0; i<projects.rowCount; i++)
+              +ProjSlot(projects.rows[i].name, projects.rows[i].chat_id)
+
+                                                       
+
+    
+         
+    include footer.pug
+
+        
+          
+      

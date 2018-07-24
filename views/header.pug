@@ -1,0 +1,33 @@
+nav(uk-navbar) 
+    div.uk-navbar-left
+      ul.uk-navbar-nav
+        li#logo #[a(href="index") wSupport]
+    div.uk-navbar-center
+    div.uk-navbar-right
+      ul.uk-navbar-nav
+        li
+          button(class="uk-button uk-button-primary top-margin uk-margin-small-left" href="#modal-center" uk-toggle) 
+            span.ru На связи
+            span.en Contact us
+
+div(id="modal-center" class="uk-flex-top" uk-modal)
+  div.uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+    button(class="uk-modal-close-default" type="button" uk-close)
+    h3.uk-modal-title 
+      b.ru Напишите нам
+      b.en Contact us
+    p.ru И свяжемся с вами в близжайшее время
+    p.en and we will contact you in the shortest time
+    form(class="uk-grid-small" uk-grid)
+      div.uk-width-1-2
+        input(class="uk-input ru name" type="text" placeholder="Имя")
+        input(class="uk-input en name" type="text" placeholder="name")
+      div.uk-width-1-2
+        input(class="uk-input ru email" type="email" placeholder="Почта")          
+        input(class="uk-input en email" type="email" placeholder="email")          
+      div.uk-width-1-1
+        textarea(class="uk-textarea ru text" rows="5" placeholder="Небольшой текст, вопрос, предложение...")
+        textarea(class="uk-textarea en text" rows="5" placeholder="Some text for us...")
+    button(class="uk-button uk-button-primary top-margin" id="sender" href="#") 
+      span.ru Отправить
+      span.en Send
