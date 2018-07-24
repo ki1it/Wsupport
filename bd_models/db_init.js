@@ -7,11 +7,10 @@ const messages_group = require('./messages_group')
 
 // Raffle.belongsTo(Lottery, { foreignKeyConstraint: true })
 // Winner.belongsTo(Raffle, { foreignKeyConstraint: true })
-
 async function init() {
   await messages_group.sync()
   await list_projects.sync()
   // await Winner.sync()
 }
-
+init()
 module.exports = init()
