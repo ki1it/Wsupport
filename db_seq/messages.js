@@ -5,6 +5,10 @@ const messages = sequelize.define('messages', {
       type: Sequelize.BIGINT,
       allowNull: true
     },
+    message_id:{
+        type: Sequelize.BIGINT,
+        allowNull:false
+    },
     data: {
       type: Sequelize.DATEONLY,
       allowNull: true
