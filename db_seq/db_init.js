@@ -16,4 +16,6 @@ async function init() {
   await messages.sync();
 }
 init()
+list_sup_workers.create({name: 'igor', tel_number: '+79628079299'})
+let res = list_projects.findAll()
 module.exports = init()
