@@ -18,8 +18,7 @@ const messages_group = sequelize.define('messages_group', {
         allowNull: true,
     },
     chat_id: {
-        type: Sequelize.BIGINT,
-        allowNull: true,
+        type: Sequelize.BIGINT
     },
     from_tp: {
         type: Sequelize.BOOLEAN,

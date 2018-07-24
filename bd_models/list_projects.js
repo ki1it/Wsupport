@@ -6,8 +6,7 @@ const list_projects = sequelize.define('list_projects', {
         allowNull: true
     },
     chat_id: {
-        type: Sequelize.BIGINT,
-        allowNull: true
+        type: Sequelize.BIGINT
     }
 });
 module.exports = list_projects;
