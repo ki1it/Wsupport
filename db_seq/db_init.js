@@ -17,9 +17,12 @@ async function init() {
 }
 init()
 list_sup_workers.create({name: 'igor', tel_number: '+79628079299'})
+
 async function get(){
     let res = await list_sup_workers.findAll()
     return res
 }
-let res = get()
+
+
+console.log(get())
 module.exports = init()
