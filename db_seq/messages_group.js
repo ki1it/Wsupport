@@ -1,10 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
 const messages_group = sequelize.define('messages_group', {
-    sender_user_id: {
-        type: Sequelize.BIGINT,
-        allowNull: true
-    },
     data: {
         type: Sequelize.DATEONLY,
         allowNull: true

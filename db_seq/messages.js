@@ -18,15 +18,15 @@ const messages = sequelize.define('messages', {
       allowNull: true,
     },
     chat_id: {
-      type: DataTypes.BIGINT,
+      type: Sequelize.BIGINT,
       allowNull: true
     },
     from_tp: {
-      type: DataTypes.BOOLEAN,
+      type: Sequelize.BOOLEAN,
       allowNull: true
     },
     react_time: {
-      type: DataTypes.BIGINT,
+      type: Sequelize.BIGINT,
       allowNull: true
     }
   });
