@@ -1,26 +1,20 @@
-/* jshint indent: 2 */
-
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('messages', {
-    id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      primaryKey: true
-    },
+const sequelize = require('./pgbase-connector');
+const Sequelize = require('sequelize');
+const messages = sequelize.define('messages', {
     sender_user_id: {
-      type: DataTypes.BIGINT,
+      type: Sequelize.BIGINT,
       allowNull: true
     },
     data: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: true
     },
     text: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true
     },
     to_id: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       references: {
         model: 'list_sup_workers',
@@ -39,7 +33,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: true
     }
-  }, {
-    tableName: 'messages'
   });
-};
+
+module.exports.messages = messages;

@@ -1,26 +1,18 @@
-/* jshint indent: 2 */
-
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('list_sup_workers', {
-    id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name: {
-      type: DataTypes.STRING,
+const sequelize = require('./pgbase-connector');
+const Sequelize = require('sequelize');
+const list_sup_workers = sequelize.define('list_sup_workers', {
+  name: {
+      type: Sequelize.STRING,
       allowNull: true
     },
     chat_id: {
-      type: DataTypes.BIGINT,
+      type: Sequelize.BIGINT,
       allowNull: true
     },
     tel_number: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true
     }
-  }, {
-    tableName: 'list_sup_workers'
   });
-};
+  
+  module.exports.list_sup_workers = list_sup_workers
