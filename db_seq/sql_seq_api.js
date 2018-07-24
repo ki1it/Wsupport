@@ -13,7 +13,7 @@
 const db = require('./db_init')
 async function GetManagers() {
     db()
-
+return 0
 }
 async  function getAllProjects(){
     let res = await  list_projects.findAll()
