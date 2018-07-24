@@ -14,15 +14,11 @@ router.get('', async function(req, res, next) {
         timeresp.push(await  sql_api.GetRespTimeForProject(managers.rows[i].to_id,req.query.proj))
     }
         var proj = req.query.proj;
-        var srTimeAns = [15, 10];
-        //var managers = ['loh', 'pidr'];
-        var countAns = [1, 1];
-        var countMan = 2;
         res.render('projectstatistics', {
             zagolovok: 'Статистика по ' + proj,
-            countMan: countMan,
-            countAns: countAns,
-            srTimeAns: srTimeAns,
+            managerName: managerName,
+            messages: messages,
+            timeresp: timeresp,
             managers: managers
         });
 });
