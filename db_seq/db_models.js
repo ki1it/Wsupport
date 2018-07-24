@@ -54,10 +54,6 @@ const messages = sequelize.define('messages', {
     to_id: {
       type: Sequelize.STRING,
       allowNull: true,
-      references: {
-        model: 'list_sup_workers',
-        key: 'tel_number'
-      }
     },
     chat_id: {
       type: DataTypes.BIGINT,
