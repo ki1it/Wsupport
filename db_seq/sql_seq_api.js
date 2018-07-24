@@ -10,3 +10,7 @@
 //     return result;
 // }
 
+async  function getAllProjects(){
+    let res = await  list_projects.findAll()
+    return res;
+}
