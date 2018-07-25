@@ -9,7 +9,7 @@ var statisticsRoute =  require('./routes/statistics');
 var managerRoute = require('./routes/manager');
 var projstatRoute = require('./routes/projectstatistics');
 var db = require('./db_seq/db_init')
-var apitg = require('./api/tg_multi')
+var apitg = require('./api/tg_multi_seq')
 var app = express();
 
 

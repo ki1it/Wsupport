@@ -34,12 +34,17 @@ async function call() {
 
                 console.log('Got update:', JSON.stringify(update, null, 2))
                 if (update['message']['reply_to_message_id'] != 0 && update['message']['is_outgoing']) {
-                    await db.messages_group.findById({})
-                    await pgapi.pool.query('select new_schema.messages_group.timestamp from new_schema.messages_group where id = $1', [update['message']['reply_to_message_id']])
-                        .then(res =>
-                            repl_time = update['message']['date'] - res.rows[0].timestamp)
+                    await db.messages_group.findById(update['message']['reply_to_message_id']).then(function (res) {
+                        repl_time = update['message']['date'] - res.timestamp
+
+                    })
                         .catch(e =>
                             console.error(e.stack))
+                    // await pgapi.pool.query('select new_schema.messages_group.timestamp from new_schema.messages_group where id = $1', [update['message']['reply_to_message_id']])
+                    //     .then(res =>
+                    //         repl_time = update['message']['date'] - res.rows[0].timestamp)
+                    //     .catch(e =>
+                    //         console.error(e.stack))
                     //console.log(err, res)
                     // pgapi.pool.query('INSERT INTO new_schema.messages_group(react_time) VALUES($1)', [update['message']['date']-res.rows[0].timestamp], (err, res) => {
                     //     console.log(err, res)
@@ -84,4 +89,4 @@ async function call() {
     // }
 }
 
-module.exports.call = call()
+module.exports.call = call
