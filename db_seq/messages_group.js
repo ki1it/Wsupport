@@ -32,6 +32,10 @@ const messages_group = sequelize.define('messages_group', {
     react_time: {
         type: Sequelize.BIGINT,
         allowNull: true
+    },
+    timest: {
+        type: Sequelize.BIGINT,
+        allowNull: true
     }
 });
 module.exports = messages_group;

@@ -26,6 +26,7 @@ async function initClients() {
 
 async function call() {
     const clients = await initClients()
+    console.log('telegram loaded')
     for (const cl in clients) {
         //if (!object.hasOwnProperty(key)) continue;
         clients[cl].registerCallback('td:update', async (update) => {
@@ -36,7 +37,7 @@ async function call() {
                 if (update['message']['reply_to_message_id'] != 0 && update['message']['is_outgoing']) {
                     await db.messages_group.findById(update['message']['reply_to_message_id']).then(function (res) {
                         repl_time = update['message']['date'] - res.timestamp
-
+                        console.log(repl_time)
                     })
                         .catch(e =>
                             console.error(e.stack))

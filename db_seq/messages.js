@@ -32,6 +32,10 @@ const messages = sequelize.define('messages', {
     react_time: {
       type: Sequelize.BIGINT,
       allowNull: true
+    },
+    timest: {
+        type: Sequelize.BIGINT,
+        allowNull: true
     }
   });
 
