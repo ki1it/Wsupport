@@ -48,7 +48,7 @@ async function call() {
 
                 }
                 if (update['message']['chat_id'] > 0) {
-                    await pgapi.pool.query('INSERT INTO new_schema.messages(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
+                    await pgapi.pool.query('INSERT INTO new_schema.messages(message_id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
                         update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
                         clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {
                         console.log(err, res)
@@ -62,12 +62,12 @@ async function call() {
                         }
                         console.log(err, res)
                     })
-                    if( update['message']['is_outgoing'] === false) {
-                        await pgapi.pool.query('delete from new_schema.messages_group where id = $1 and from_tp = false', [update['message']['id']], (err, res) => {
-                            console.log(err, res)
-                        })
-                    }
-                    await pgapi.pool.query('INSERT INTO new_schema.messages_group(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
+                    // if( update['message']['is_outgoing'] === false) {
+                    //     await pgapi.pool.query('delete from new_schema.messages_group where id = $1 and from_tp = false', [update['message']['id']], (err, res) => {
+                    //         console.log(err, res)
+                    //     })
+                    // }
+                    await pgapi.pool.query('INSERT INTO new_schema.messages_group(message_id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
                         update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
                         clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {
                         console.log(err, res)
@@ -84,4 +84,4 @@ async function call() {
     // }
 }
 
-module.exports.call = call()
+module.exports.call = call
