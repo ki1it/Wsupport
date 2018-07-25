@@ -22,7 +22,6 @@ async function init() {
     Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
 }
 
-
     module.exports.init = init
     module.exports.Project = Project
     module.exports.Message_in_Group = Message_in_Group
