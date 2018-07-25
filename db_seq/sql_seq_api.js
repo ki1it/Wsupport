@@ -130,6 +130,16 @@ async function GetRespTime() {
     return result;
 }
 
+
+async function GetManagers() {
+    var result = await db.Message_in_Group.count({
+        col: 'chat_id',
+        include: ['Worker'],
+        group: ['to_id', 'name']
+    })
+    return result;
+}
+
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
 module.exports.GetPersonName = GetPersonName
@@ -141,5 +151,5 @@ module.exports.GetProjectName = GetProjectName
 module.exports.GetProjectsById = GetProjectsById
 module.exports.GetManagersByProjectId = GetManagersByProjectId
 module.exports.GetRespTime = GetRespTime
-//  module.exports.
+module.exports.GetManagers = GetManagers
 //  module.exports.
