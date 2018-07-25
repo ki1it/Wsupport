@@ -23,9 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+apitg.call()
 db.init()
-apitg.call();
-
 app.use('/index', indexRouter);
 app.use('/statistics', statisticsRoute);
 app.use('/manager', managerRoute);
