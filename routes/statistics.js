@@ -7,7 +7,7 @@ var seq_api = require('../db_seq/sql_seq_api')
 /* GET statis page. */
 router.get('/', async function(req, res, next) {
 
-        let managers =  await seq_api.getAllManagers()
+        let managers =  await sql_api.GetManagers()
        // let srTimeAns = await sql_api.GetRespTime()
 
        // let messagesGroup = await sql_api.GetAllMessagesGroup()
