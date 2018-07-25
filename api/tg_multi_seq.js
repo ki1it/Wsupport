@@ -1,6 +1,7 @@
 const {Client} = require('tglib')
 var pgapi = require('../api/pg_api')
 var db = require('../db_seq/db_init')
+
 async function initClients() {
     const clients = {}
     const credentials = {
@@ -35,8 +36,12 @@ async function call() {
 
                 console.log('Got update:', JSON.stringify(update, null, 2))
                 if (update['message']['reply_to_message_id'] != 0 && update['message']['is_outgoing']) {
-                    await db.messages_group.findById(update['message']['reply_to_message_id']).then(function (res) {
-                        repl_time = update['message']['date'] - res.timestamp
+                    await db.messages_group.findAll({
+                        where: {
+                            message_id: update['message']['reply_to_message_id']
+                        }
+                        }).then(function (res) {
+                        repl_time = update['message']['date'] - res.timest
                         console.log(repl_time)
                     })
                         .catch(e =>
@@ -54,21 +59,45 @@ async function call() {
 
                 }
                 if (update['message']['chat_id'] > 0) {
-                    await pgapi.pool.query('INSERT INTO new_schema.messages(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
-                        update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
-                        clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {
-                        console.log(err, res)
+                    await db.messages.create({
+                        message_id: update['message']['id'],
+                        sender_user_id: update['message']['sender_user_id'],
+                        data: new Date(update['message']['date'] * 1000),
+                        text: update['message']['content']['text']['text'],
+                        to_id: clients[cl].options.auth.value,
+                        chat_id: update['message']['chat_id'],
+                        from_tp: update['message']['is_outgoing'],
+                        timest: update['message']['date'],
+                        react_time: repl_time
                     })
+                    // await pgapi.pool.query('INSERT INTO new_schema.messages(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
+                    //     update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
+                    //     clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {
+                    //     console.log(err, res)
+                    // })
                 } else {
-                    await pgapi.pool.query('select exists(select * from new_schema.list_projects where chat_id = $1);', [update['message']['chat_id']], (err, res) => {
-                        if (res.rows[0].exists === false) {
-                            pgapi.pool.query('INSERT INTO new_schema.list_projects(name, chat_id) VALUES($1, $2) RETURNING *', ['undef', update['message']['chat_id']], (err, res) => {
-                                console.log(err, res)
-                            })
+                    await db.list_projects.findAll({
+                        where:{
+                            chat_id:update['message']['chat_id']
                         }
-                        console.log(err, res)
+                    }).then(function (res) {
+                        if (res.length === 0) {
+                            await db.list_projects.create({
+                                name:'undef',
+                                chat_id: update['message']['chat_id']
+                            })
+
+                        }
                     })
-                    if( update['message']['is_outgoing'] === false) {
+                    // await pgapi.pool.query('select exists(select * from new_schema.list_projects where chat_id = $1);', [update['message']['chat_id']], (err, res) => {
+                    //     if (res.rows[0].exists === false) {
+                    //         pgapi.pool.query('INSERT INTO new_schema.list_projects(name, chat_id) VALUES($1, $2) RETURNING *', ['undef', update['message']['chat_id']], (err, res) => {
+                    //             console.log(err, res)
+                    //         })
+                    //     }
+                    //     console.log(err, res)
+                    // })
+                    if (update['message']['is_outgoing'] === false) {
                         await pgapi.pool.query('delete from new_schema.messages_group where id = $1 and from_tp = false', [update['message']['id']], (err, res) => {
                             console.log(err, res)
                         })
