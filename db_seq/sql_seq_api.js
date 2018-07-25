@@ -8,8 +8,9 @@ async function GetProjects() {
     return result;
 }
 
+
 // количество ответов в проекте
-async function GetCountGetForProject(tel,chat_id) {
+async function GetCountSendForProject(tel,chat_id) {
     var result = await db.Message_in_Group.count({
         distinct: true,
         include: [Worker],
@@ -19,21 +20,34 @@ async function GetCountGetForProject(tel,chat_id) {
             to_id: tel
         }
     })
-//'select count(DISTINCT new_schema.messages_group.id)from new_schema.messages_group,new_schema.list_sup_workers where to_id = $1 and chat_id =$2 and from_tp = false ', [tel,chat_id]
+    return result
+}
+// количество принятых в проекте
+async function GetCountGetForProject(tel,chat_id) {
+    var result = await db.Message_in_Group.count({
+        distinct: true,
+        include: [Worker],
+        where: {
+            from_tp: false,
+            chat_id: chat_id,
+            to_id: tel
+        }
+    })
     return result
 }
 // среднее время ответа
 async function GetRespTimeForProject(tel,chat_id) {
-    var result = await db.Message_in_Group.sequelize.fn('AVG',{
+    var result = await db.Message_in_Group.getAll(sequelize.fn('AVG',{
             col:"react_time",
             where:{
                 from_tp: true,
                 to_id: tel,
                 chat_id: chat_id
             }
-    })
+    }))
     return result
 }
+//
 async function GetMessForManager(tel) {
     var result = await db.Message_in_Group.count({
         distinct: true,
@@ -74,7 +88,7 @@ module.exports.GetPersonName = GetPersonName
 module.exports.GetMessForManager = GetMessForManager
 module.exports.GetCountGetForProject = GetCountGetForProject
 module.exports.GetRespTimeForProject = GetRespTimeForProject
-//    module.exports.
+module.exports.GetCountSendForProject = GetCountSendForProject
  //   module.exports.
 //    module.exports.
   //  module.exports.
