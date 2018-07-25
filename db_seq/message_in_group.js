@@ -1,6 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
-const messages_group = sequelize.define('messages_group', {
+const Message_in_Group = sequelize.define('Message_in_Group', {
     sender_user_id: {
         type: Sequelize.BIGINT,
         allowNull: true
@@ -38,4 +38,4 @@ const messages_group = sequelize.define('messages_group', {
         allowNull: true
     }
 });
-module.exports = messages_group;
+module.exports.Message_in_Group = Message_in_Group;
