@@ -19,4 +19,4 @@ async function init() {
     Worker.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
     Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
 }
-init()
+module.exports.init = init
