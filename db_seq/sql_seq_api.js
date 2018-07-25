@@ -8,10 +8,20 @@ async function GetProjects() {
     return result;
 }
 
-
+async function GetProjectName(chat_id) {
+    var result = await db.Project.getAll({
+        col: 'name',
+        where:{
+            chat_id: chat_id
+        }
+    }
+    )
+    return result
+}
 // количество ответов в проекте
 async function GetCountSendForProject(tel,chat_id) {
     var result = await db.Message_in_Group.count({
+        col: 'id',
         distinct: true,
         include: [Worker],
         where: {
@@ -26,6 +36,7 @@ async function GetCountSendForProject(tel,chat_id) {
 async function GetCountGetForProject(tel,chat_id) {
     var result = await db.Message_in_Group.count({
         distinct: true,
+        col: 'id',
         include: [Worker],
         where: {
             from_tp: false,
@@ -82,6 +93,19 @@ async function GetMessForManagerLs(tel) {
     })
     return result
 }
+
+async function GetManagersByProjectId(chat_id) {
+    var result = await db.Message_in_Group.getAll({
+        col:'to_id',
+        group: ['to_id'],
+        where: {
+            chat_id: chat_id
+        }
+    })
+    return result
+}
+
+
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
 module.exports.GetPersonName = GetPersonName
@@ -89,6 +113,6 @@ module.exports.GetMessForManager = GetMessForManager
 module.exports.GetCountGetForProject = GetCountGetForProject
 module.exports.GetRespTimeForProject = GetRespTimeForProject
 module.exports.GetCountSendForProject = GetCountSendForProject
- //   module.exports.
+module.exports.GetProjectName = GetProjectName
 //    module.exports.
   //  module.exports.

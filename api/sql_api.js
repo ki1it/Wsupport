@@ -41,15 +41,17 @@ async function GetProjectsById(tel) {
     var result = await pgapi.pool.query('select new_schema.messages_group.chat_id from new_schema.messages_group where to_id=$1  group by chat_id', [tel]);
     return result
 }
+// --------------------------------
 async function GetManagersByProjectId(chat_id) {
     var result = await pgapi.pool.query('select new_schema.messages_group.to_id from new_schema.messages_group where chat_id=$1  group by to_id', [chat_id]);
     return result
 }
+
 async function GetProjectName(chat_id) {
     var result = await pgapi.pool.query('select new_schema.list_projects.name from new_schema.list_projects where chat_id = $1', [chat_id]);
     return result
 }
-// --------------------------------
+
 async function GetCountSendForProject(tel,chat_id) {
     var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id)from new_schema.messages_group,new_schema.list_sup_workers where to_id = $1 and chat_id =$2 and from_tp = true ', [tel,chat_id]);
     return result
