@@ -5,7 +5,7 @@ async function initClients() {
     const clients = {}
     const credentials = {
         agent_tp1: {type: 'user', value: '+79069624310'},
-        agent_tp2: {type: 'user', value: '+79628079299'}
+        //agent_tp2: {type: 'user', value: '+79628079299'}
     }
     for (const key in credentials) {
         try {
