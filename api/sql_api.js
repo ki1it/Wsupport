@@ -36,12 +36,12 @@ async function GetPersonId(name) {
 //console.log(result);
     return result;
 }
-
+// -----------------------------------------------
 async function GetProjectsById(tel) {
     var result = await pgapi.pool.query('select new_schema.messages_group.chat_id from new_schema.messages_group where to_id=$1  group by chat_id', [tel]);
     return result
 }
-// --------------------------------
+
 async function GetManagersByProjectId(chat_id) {
     var result = await pgapi.pool.query('select new_schema.messages_group.to_id from new_schema.messages_group where chat_id=$1  group by to_id', [chat_id]);
     return result

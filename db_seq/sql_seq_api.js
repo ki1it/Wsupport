@@ -48,8 +48,8 @@ async function GetCountGetForProject(tel,chat_id) {
 }
 // среднее время ответа
 async function GetRespTimeForProject(tel,chat_id) {
-    var result = await db.Message_in_Group.getAll(sequelize.fn('AVG',{
-            col:"react_time",
+    var result = await db.Message_in_Group.findAll(sequelize.fn('AVG',{
+            col: 'react_time',
             where:{
                 from_tp: true,
                 to_id: tel,
@@ -105,6 +105,30 @@ async function GetManagersByProjectId(chat_id) {
     return result
 }
 
+async function GetProjectsById(tel) {
+    var result = await db.Message_in_Group.findAll({
+        attributes: ['chat_id'],
+        group: ['chat_id'],
+        where: {
+            id: tel
+        }
+    })
+
+    //pgapi.pool.query('select new_schema.messages_group.chat_id from new_schema.messages_group where to_id=$1  group by chat_id', [tel]);
+    return result
+}
+
+async function GetRespTime() {
+    var result = await db.Message_in_Group.findAll(sequelize.fn('AVG',{
+        col: 'react_time',
+        where: {
+            from_tp: true
+        },
+        group: ['to_id'],
+        order: ['to_id']
+    }))
+    return result;
+}
 
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
@@ -114,5 +138,8 @@ module.exports.GetCountGetForProject = GetCountGetForProject
 module.exports.GetRespTimeForProject = GetRespTimeForProject
 module.exports.GetCountSendForProject = GetCountSendForProject
 module.exports.GetProjectName = GetProjectName
-//    module.exports.
-  //  module.exports.
+module.exports.GetProjectsById = GetProjectsById
+module.exports.GetManagersByProjectId = GetManagersByProjectId
+//  module.exports.GetRespTime = GetRespTime
+//  module.exports.
+//  module.exports.
