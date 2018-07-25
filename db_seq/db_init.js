@@ -16,11 +16,6 @@ async function init() {
   await messages.sync();
 }
 
-async function get(){
-    let res = await list_sup_workers.findAll()
-    return res
-}
-
     module.exports.init = init
     module.exports.list_projects = list_projects
     module.exports.messages_group = messages_group
