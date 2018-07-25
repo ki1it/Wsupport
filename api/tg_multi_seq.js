@@ -36,7 +36,7 @@ async function call() {
 
                 console.log('Got update:', JSON.stringify(update, null, 2))
                 if (update['message']['reply_to_message_id'] != 0 && update['message']['is_outgoing']) {
-                    await db.messages_group.findAll({
+                    await db.Message_in_Group.findAll({
                         where: {
                             message_id: update['message']['reply_to_message_id']
                         }
@@ -59,7 +59,7 @@ async function call() {
 
                 }
                 if (update['message']['chat_id'] > 0) {
-                    await db.messages.create({
+                    await db.Message.create({
                         message_id: update['message']['id'],
                         sender_user_id: update['message']['sender_user_id'],
                         data: new Date(update['message']['date'] * 1000),
@@ -76,13 +76,13 @@ async function call() {
                     //     console.log(err, res)
                     // })
                 } else {
-                    await db.list_projects.findAll({
+                    await db.Project.findAll({
                         where:{
                             chat_id:update['message']['chat_id']
                         }
-                    }).then(function (res) {
+                    }).then(async function (res) {
                         if (res.length === 0) {
-                            await db.list_projects.create({
+                            await db.Project.create({
                                 name:'undef',
                                 chat_id: update['message']['chat_id']
                             })
@@ -97,16 +97,29 @@ async function call() {
                     //     }
                     //     console.log(err, res)
                     // })
-                    if (update['message']['is_outgoing'] === false) {
-                        await pgapi.pool.query('delete from new_schema.messages_group where id = $1 and from_tp = false', [update['message']['id']], (err, res) => {
-                            console.log(err, res)
-                        })
-                    }
-                    await pgapi.pool.query('INSERT INTO new_schema.messages_group(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
-                        update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
-                        clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {
-                        console.log(err, res)
+                    // Удалено за ненадобностью
+                    // if (update['message']['is_outgoing'] === false) {
+                    //     await
+                    //     await pgapi.pool.query('delete from new_schema.messages_group where id = $1 and from_tp = false', [update['message']['id']], (err, res) => {
+                    //         console.log(err, res)
+                    //     })
+                    // }
+                    await db.Message_in_Group.create({
+                        message_id: update['message']['id'],
+                        sender_user_id: update['message']['sender_user_id'],
+                        data: new Date(update['message']['date'] * 1000),
+                        text: update['message']['content']['text']['text'],
+                        to_id: clients[cl].options.auth.value,
+                        chat_id: update['message']['chat_id'],
+                        from_tp: update['message']['is_outgoing'],
+                        timest: update['message']['date'],
+                        react_time: repl_time
                     })
+                    // await pgapi.pool.query('INSERT INTO new_schema.messages_group(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
+                    //     update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
+                    //     clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {
+                    //     console.log(err, res)
+                    // })
                 }
             }
         })
