@@ -9,11 +9,14 @@ const list_sup_workers = require('./list_sup_workers')
 
 // Raffle.belongsTo(Lottery, { foreignKeyConstraint: true })
 // Winner.belongsTo(Raffle, { foreignKeyConstraint: true })
+
+
+
 async function init() {
   await messages_group.sync();
   await list_projects.sync();
   await list_sup_workers.sync();
   await messages.sync();
 }
-
-    module.exports.init = init
+init()
+   // module.exports.init = init
