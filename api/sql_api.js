@@ -25,7 +25,7 @@ async function GetRespTime() {
 
 async function GetAllMessagesLs() {
     var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id),new_schema.messages.to_id ' +
-        'from new_schema.messages,new_schema.list_sup_workers where from_tp=true group by to_id order by to_id');
+        'from new_schema.messages where from_tp=true group by to_id order by to_id');
 //console.log(result);
     return result;
 }

@@ -1,26 +1,27 @@
-var db = require('./db_init')
+let db = require('./db_init')
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
 
 // получить проекты
 async function GetProjects() {
-    var result = await db.Project.findAll();
+    let result = await db.Project.findAll();
     return result;
 }
 
 async function GetProjectName(chat_id) {
-    var result = await db.Project.getAll({
-        col: 'name',
-        where:{
-            chat_id: chat_id
+    let result = await db.Project.getAll({
+            col: 'name',
+            where: {
+                chat_id: chat_id
+            }
         }
-    }
     )
     return result
 }
+
 // количество ответов в проекте
-async function GetCountSendForProject(tel,chat_id) {
-    var result = await db.Message_in_Group.count({
+async function GetCountSendForProject(tel, chat_id) {
+    let result = await db.Message_in_Group.count({
         col: 'id',
         distinct: true,
         include: [Worker],
@@ -32,9 +33,10 @@ async function GetCountSendForProject(tel,chat_id) {
     })
     return result
 }
+
 // количество принятых в проекте
-async function GetCountGetForProject(tel,chat_id) {
-    var result = await db.Message_in_Group.count({
+async function GetCountGetForProject(tel, chat_id) {
+    let result = await db.Message_in_Group.count({
         distinct: true,
         col: 'id',
         include: [Worker],
@@ -46,34 +48,37 @@ async function GetCountGetForProject(tel,chat_id) {
     })
     return result
 }
+
 // среднее время ответа
-async function GetRespTimeForProject(tel,chat_id) {
-    var result = await db.Message_in_Group.findAll(sequelize.fn('AVG',{
-            col: 'react_time',
-            where:{
-                from_tp: true,
-                to_id: tel,
-                chat_id: chat_id
-            }
+async function GetRespTimeForProject(tel, chat_id) {
+    let result = await db.Message_in_Group.findAll(sequelize.fn('AVG', {
+        col: 'react_time',
+        where: {
+            from_tp: true,
+            to_id: tel,
+            chat_id: chat_id
+        }
     }))
     return result
 }
+
 //
 async function GetMessForManager(tel) {
-    var result = await db.Message_in_Group.count({
+    let result = await db.Message_in_Group.count({
         distinct: true,
-        col:"id",
-        where:{
-            from_tp:true,
-            to_id : tel
+        col: "id",
+        where: {
+            from_tp: true,
+            to_id: tel
         }
     })
     // await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id) from new_schema.messages_group where from_tp=true and to_id = $1', [tel]);
     return result
 }
+
 // получить имя по телефону
 async function GetPersonName(tel_number) {
-    var result = await db.Worker.findAll({
+    let result = await db.Worker.findAll({
         attributes: ['name'],
         where: {
             tel_number: tel_number
@@ -81,22 +86,23 @@ async function GetPersonName(tel_number) {
     });
     return result;
 }
+
 // колво сообщений для манагера в лс
 async function GetMessForManagerLs(tel) {
-    var result = await db.Message.count({
+    let result = await db.Message.count({
         distinct: true,
-        col:"id",
-        where:{
-            from_tp:true,
-            to_id : tel
+        col: "id",
+        where: {
+            from_tp: true,
+            to_id: tel
         }
     })
     return result
 }
 
 async function GetManagersByProjectId(chat_id) {
-    var result = await db.Message_in_Group.getAll({
-        col:'to_id',
+    let result = await db.Message_in_Group.getAll({
+        col: 'to_id',
         group: ['to_id'],
         where: {
             chat_id: chat_id
@@ -105,30 +111,70 @@ async function GetManagersByProjectId(chat_id) {
     return result
 }
 
-async function GetProjectsById(tel) {
-    var result = await db.Message_in_Group.findAll({
-        attributes: ['chat_id'],
-        group: ['chat_id'],
+async function GetAllMessagesLs() {
+    let result = await db.Message.count({
+        distinct: true,
+        col: "id",
         where: {
-            id: tel
+            from_tp: true
+        },
+        group: ['to_id'],
+        order: ['to_id']
+
+    })
+//console.log(result);
+    return result
+}
+async function GetAllMessagesGroup() {
+    let result = await db.Message_in_Group.count({
+        distinct: true,
+        col: "id",
+        where: {
+            from_tp: true
+        },
+        group: ['to_id'],
+        order: ['to_id']
+
+    })
+    return result;
+}
+async function GetPersonId(name) {
+    let result = await db.Worker.findAll({
+        where: {
+            name: name
         }
     })
+}
+
+async function GetProjectsById(tel) {
+    let result = await
+        db.Message_in_Group.findAll({
+            attributes: ['chat_id'],
+            group: ['chat_id'],
+            where: {
+                id: tel
+            }
+        })
 
     //pgapi.pool.query('select new_schema.messages_group.chat_id from new_schema.messages_group where to_id=$1  group by chat_id', [tel]);
     return result
 }
 
 async function GetRespTime() {
-    var result = await db.Message_in_Group.findAll(sequelize.fn('AVG',{
-        col: 'react_time',
-        where: {
-            from_tp: true
-        },
-        group: ['to_id'],
-        order: ['to_id']
-    }))
+    let result = await
+        db.Message_in_Group.findAll(sequelize.fn('AVG', {
+            col: 'react_time',
+            where: {
+                from_tp: true
+            },
+            group: ['to_id'],
+            order: ['to_id']
+        }))
     return result;
 }
+
+
+
 
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
@@ -141,5 +187,5 @@ module.exports.GetProjectName = GetProjectName
 module.exports.GetProjectsById = GetProjectsById
 module.exports.GetManagersByProjectId = GetManagersByProjectId
 module.exports.GetRespTime = GetRespTime
-//  module.exports.
+module.exports.GetManagers = GetManagers
 //  module.exports.

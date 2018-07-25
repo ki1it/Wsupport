@@ -23,8 +23,8 @@ html(lang='en')
           include menu.pug
         div(class="uk-width-5-6@m")
           div(uk-grid)
-            - for(var i=0; i<projects.rowCount; i++)
-              +ProjSlot(projects.rows[i].name, projects.rows[i].chat_id)
+            - for(var i=0; i<projects.length; i++)
+              +ProjSlot(projects[i].dataValues.name, projects[i].dataValues.chat_id)
 
                                                        
 

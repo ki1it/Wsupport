@@ -1,6 +1,5 @@
 var express = require('express');
-var sql_api = require('../api/sql_api');
-//var seq_api = require('../db_seq/sql_seq_api')
+var sql_api = require('../db_seq/sql_seq_api')
 var router = express.Router();
 
 /* GET home page. */
