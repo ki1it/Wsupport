@@ -1,6 +1,6 @@
 const Project = require('./project')
 const Message_in_Group = require('./message_in_group')
-const Message= require('./message')
+const Message = require('./message')
 const Sup_Worker = require('./sup_worker')
 // const Raffle = require('Raffle')
 
