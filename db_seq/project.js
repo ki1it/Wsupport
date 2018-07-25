@@ -9,4 +9,4 @@ const Project = sequelize.define('Projects', {
         type: Sequelize.BIGINT
     }
 });
-module.exports.Project = Project;
+module.exports = Project;

@@ -39,4 +39,4 @@ const Message = sequelize.define('Message', {
     }
   });
 
-module.exports.Message = Message;
+module.exports = Message;

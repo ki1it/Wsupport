@@ -1,7 +1,7 @@
-const list_projects = require('./project')
-const messages_group = require('./message_in_group')
-const messages = require('./message')
-const list_sup_workers = require('./sup_worker')
+const Project = require('./project')
+const Message_in_Group = require('./message_in_group')
+const Message= require('./message')
+const Sup_Worker = require('./sup_worker')
 // const Raffle = require('Raffle')
 
 //list_projects.hasMany(messages_group, { foreignKey:'chat_id', sourceKey:'chat_id',  onUpdate: 'cascade', onDelete: 'cascade' })
@@ -14,10 +14,10 @@ Sup_Worker.hasMany(Message, {foreignKey: 'tel_number',sourceKey: 'to_id'});
 
 
 async function init() {
-  await messages_group.sync();
-  await list_projects.sync();
-  await list_sup_workers.sync();
-  await messages.sync();
+  await Message_in_Group.sync();
+  await Project.sync();
+  await Sup_Worker.sync();
+  await Message.sync();
 }
 init()
    // module.exports.init = init

@@ -38,4 +38,4 @@ const Message_in_Group = sequelize.define('Message_in_Group', {
         allowNull: true
     }
 });
-module.exports.Message_in_Group = Message_in_Group;
+module.exports = Message_in_Group;

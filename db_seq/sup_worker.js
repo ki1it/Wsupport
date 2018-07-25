@@ -15,4 +15,4 @@ const Sup_Worker = sequelize.define('Sup_Worker', {
     }
   });
   
-module.exports.Sup_Worker = Sup_Worker
+module.exports= Sup_Worker
