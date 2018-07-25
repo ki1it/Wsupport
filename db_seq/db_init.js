@@ -11,7 +11,8 @@ const Sup_Worker = require('./sup_worker')
 // Winner.belongsTo(Raffle, { foreignKeyConstraint: true })
 
 Sup_Worker.hasMany(Message, {foreignKey: 'tel_number',sourceKey: 'to_id'});
-
+Sup_Worker.hasMany(Message_in_Group, {foreignKey: 'tel_number',sourceKey: 'to_id'});
+Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
 
 async function init() {
   await Message_in_Group.sync();
@@ -21,7 +22,7 @@ async function init() {
 }
 
     module.exports.init = init
-    module.exports.list_projects = list_projects
-    module.exports.messages_group = messages_group
-    module.exports.messages = messages
-    module.exports.list_sup_workers = list_sup_workers
+    module.exports.Project = Project
+    module.exports.Message_in_Group = Message_in_Group
+    module.exports.Message = Message
+    module.exports.Sup_Worker = Sup_Worker
