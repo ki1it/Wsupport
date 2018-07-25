@@ -1,6 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
-const Sup_Worker = sequelize.define('Sup_Worker', {
+const Worker = sequelize.define('Worker', {
   name: {
       type: Sequelize.STRING,
       allowNull: true
@@ -15,4 +15,4 @@ const Sup_Worker = sequelize.define('Sup_Worker', {
     }
   });
   
-module.exports= Sup_Worker
+module.exports = Worker
