@@ -3,22 +3,23 @@ const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
 
 // получить проекты
-
 async function GetProjects() {
     var result = await db.Project.findAll();
     return result;
 }
 
-async function GetManagers() {
-
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.chat_id),new_schema.messages_group.to_id, ' +
-        'new_schema.list_sup_workers.name from new_schema.messages_group inner join  new_schema.list_sup_workers on(tel_number = to_id) group by to_id, name');
-
-
-    var result = await db.Project.findAll();
-    return result;
+// среднее время ответа
+async function GetRespTimeForProject(tel,chat_id) {
+    var result = await db.Message_in_Group.sequelize.fn('AVG',{
+            col:"react_time",
+            where:{
+                from_tp: true,
+                to_id: tel,
+                chat_id: chat_id
+            }
+    })
+    return result
 }
-
 async function GetMessForManager(tel) {
     var result = await db.Message_in_Group.count({
         distinct: true,
@@ -41,6 +42,7 @@ async function GetPersonName(tel_number) {
     });
     return result;
 }
+// колво сообщений для манагера в лс
 async function GetMessForManagerLs(tel) {
     var result = await db.Message.count({
         distinct: true,
@@ -53,7 +55,7 @@ async function GetMessForManagerLs(tel) {
     return result
 }
 module.exports.GetProjects = GetProjects
-module.exports.GetManagers = GetManagers
 module.exports.GetMessForManagerLs = GetMessForManagerLs
 module.exports.GetPersonName = GetPersonName
 module.exports.GetMessForManager = GetMessForManager
+module.exports.GetRespTimeForProject = GetRespTimeForProject

@@ -5,7 +5,6 @@ html(lang='en')
   body
     mixin rowTable(name, ans,vls, proj, srtime)
       tr
-
         td #[a(href="manager?id=" + name) @#{name}]
         td #{ans}
         td #{vls}
@@ -31,9 +30,6 @@ html(lang='en')
               tbody
               - for(var i=0; i<managers.rowCount; i++)
                 +rowTable(managers.rows[i].name, messagesGroup.rows[i].count, messagesLs.rows[i].count, managers.rows[i].count, srTimeAns.rows[i].avg)
-
-
-
 
     include footer.pug
 
