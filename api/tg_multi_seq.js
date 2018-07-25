@@ -1,6 +1,6 @@
 const {Client} = require('tglib')
 var pgapi = require('../api/pg_api')
-
+var db = require('../db_seq/db_init')
 async function initClients() {
     const clients = {}
     const credentials = {
@@ -34,7 +34,7 @@ async function call() {
 
                 console.log('Got update:', JSON.stringify(update, null, 2))
                 if (update['message']['reply_to_message_id'] != 0 && update['message']['is_outgoing']) {
-
+                    await db.messages_group.findById({})
                     await pgapi.pool.query('select new_schema.messages_group.timestamp from new_schema.messages_group where id = $1', [update['message']['reply_to_message_id']])
                         .then(res =>
                             repl_time = update['message']['date'] - res.rows[0].timestamp)

@@ -1,5 +1,5 @@
 var express = require('express');
-var apitg = require('../api/tg_multi');
+var apitg = require('../api/tg_multi')
 var sql_api = require('../api/sql_api');
 var seq_api = require('../db_seq/sql_seq_api')
 var router = express.Router();
@@ -20,7 +20,7 @@ router.get('/', async function(req, res, next) {
     let chatIDs = []
 
   res.render('index', { projects : projects});
-    apitg.call();
+
 
 });
 

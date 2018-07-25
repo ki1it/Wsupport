@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var statisticsRoute =  require('./routes/statistics');
 var managerRoute = require('./routes/manager');
 var projstatRoute = require('./routes/projectstatistics');
+var db = require('./db_seq/db_init')
+var apitg = require('./api/tg_multi')
 var app = express();
 
 
@@ -21,8 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-
+db.init()
+apitg.call();
 
 app.use('/index', indexRouter);
 app.use('/statistics', statisticsRoute);
