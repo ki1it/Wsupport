@@ -140,6 +140,6 @@ module.exports.GetCountSendForProject = GetCountSendForProject
 module.exports.GetProjectName = GetProjectName
 module.exports.GetProjectsById = GetProjectsById
 module.exports.GetManagersByProjectId = GetManagersByProjectId
-//  module.exports.GetRespTime = GetRespTime
+module.exports.GetRespTime = GetRespTime
 //  module.exports.
 //  module.exports.
