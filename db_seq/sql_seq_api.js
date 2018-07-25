@@ -176,6 +176,16 @@ async function GetRespTime() {
 
 
 
+
+async function GetManagers() {
+    var result = await db.Message_in_Group.count({
+        col: 'chat_id',
+        include: ['Worker'],
+        group: ['to_id', 'name']
+    })
+    return result;
+}
+
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
 module.exports.GetPersonName = GetPersonName
