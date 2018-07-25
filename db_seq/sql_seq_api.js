@@ -1,7 +1,7 @@
-const list_projects = require('./list_projects')
-const messages_group = require('./messages_group')
-const messages = require('./messages')
-const list_sup_workers = require('./list_sup_workers')
+const list_projects = require('./project')
+const messages_group = require('./message_in_group')
+const messages = require('./message')
+const list_sup_workers = require('./sup_worker')
 const db = require('./db_init')
 
 // получить всех манагеров

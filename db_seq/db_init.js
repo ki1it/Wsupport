@@ -1,7 +1,7 @@
-const list_projects = require('./list_projects')
-const messages_group = require('./messages_group')
-const messages = require('./messages')
-const list_sup_workers = require('./list_sup_workers')
+const list_projects = require('./project')
+const messages_group = require('./message_in_group')
+const messages = require('./message')
+const list_sup_workers = require('./sup_worker')
 // const Raffle = require('Raffle')
 
 //list_projects.hasMany(messages_group, { foreignKey:'chat_id', sourceKey:'chat_id',  onUpdate: 'cascade', onDelete: 'cascade' })
@@ -9,6 +9,10 @@ const list_sup_workers = require('./list_sup_workers')
 
 // Raffle.belongsTo(Lottery, { foreignKeyConstraint: true })
 // Winner.belongsTo(Raffle, { foreignKeyConstraint: true })
+
+Sup_Worker.hasMany(Message, {foreignKey: 'tel_number',sourceKey: 'to_id'});
+
+
 async function init() {
   await messages_group.sync();
   await list_projects.sync();

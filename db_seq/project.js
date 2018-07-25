@@ -1,6 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
-const list_projects = sequelize.define('list_projects', {
+const Project = sequelize.define('Projects', {
     name: {
         type: Sequelize.STRING,
         allowNull: true
@@ -9,4 +9,4 @@ const list_projects = sequelize.define('list_projects', {
         type: Sequelize.BIGINT
     }
 });
-module.exports = list_projects;
+module.exports.Project = Project;

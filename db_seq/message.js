@@ -1,6 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
-const messages = sequelize.define('messages', {
+const Message = sequelize.define('Message', {
     sender_user_id: {
       type: Sequelize.BIGINT,
       allowNull: true
@@ -39,4 +39,4 @@ const messages = sequelize.define('messages', {
     }
   });
 
-module.exports = messages;
+module.exports.Message = Message;
