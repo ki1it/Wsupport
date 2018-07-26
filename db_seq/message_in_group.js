@@ -19,9 +19,11 @@ const Message_in_Group = sequelize.define('Message_in_Group', {
     },
     to_id: {
         type: Sequelize.STRING,
+        unique:true
     },
     chat_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        unique:true
     },
     from_tp: {
         type: Sequelize.BOOLEAN,

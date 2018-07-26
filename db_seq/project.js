@@ -7,7 +7,8 @@ const Project = sequelize.define('Projects', {
         allowNull: true
     },
     chat_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        unique:true
     }
 });
 module.exports = Project;

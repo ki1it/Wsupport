@@ -1,6 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
-const Worker = sequelize.define('Worker', {
+const Workerr = sequelize.define('Workerr', {
   name: {
       type: Sequelize.STRING,
     },
@@ -10,7 +10,8 @@ const Worker = sequelize.define('Worker', {
     },
     tel_number: {
       type: Sequelize.STRING,
+        unique:true
     }
   });
   
-module.exports = Worker
+module.exports = Workerr
