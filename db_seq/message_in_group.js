@@ -14,7 +14,7 @@ const Message_in_Group = sequelize.define('Message_in_Group', {
     },
 
     text: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(3000),
         allowNull: true
     },
     to_id: {

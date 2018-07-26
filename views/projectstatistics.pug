@@ -25,7 +25,7 @@ html(lang='en')
                                     th СР. Время ответа
                             tbody
                                 - for(let i=0; i<managers.length; i++)
-                                    +rowTable(managerName[i][0].dataValues.name, messages[i], timeresp[i][0].dataValues.avg)
+                                    +rowTable(managerName[i][0].dataValues.name, messages[i], Math.round( timeresp[i]))
 
 
 

@@ -12,7 +12,12 @@ router.get('', async function(req, res, next) {
     {
         managerName.push(await sql_api.GetPersonName(managers[i].dataValues.to_id))
         messages.push(await sql_api.GetCountSendForProject(managers[i].dataValues.to_id,req.query.proj))
-        timeresp.push(await  sql_api.GetRespTimeForProject(managers[i].dataValues.to_id,req.query.proj))
+        let time = await  sql_api.GetRespTimeForProject(managers[i].dataValues.to_id,req.query.proj)
+        if (time.length == 0) {
+            timeresp.push(0)
+        }
+        else
+            timeresp.push(time[0].dataValues.avg)
     }
         var proj = req.query.proj;
         res.render('projectstatistics', {

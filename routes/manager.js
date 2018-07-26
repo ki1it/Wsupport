@@ -35,6 +35,7 @@ router.get('', async function(req, res, next) {
             timeresp.push(0)
         else
             timeresp.push(time["0"].dataValues.avg)
+
     }
     res.render('manager', {
         //timeAnsProjects: timeAnsProjects,

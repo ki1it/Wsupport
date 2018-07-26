@@ -14,7 +14,7 @@ const Message = sequelize.define('Message', {
       allowNull: true
     },
     text: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(3000),
       allowNull: true
     },
     to_id: {

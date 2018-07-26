@@ -40,7 +40,7 @@ html(lang='en')
                                             title: {
                                                 text: 'Месяцы'
                                             },
-                                            categories: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+                                            categories: [ 'неделю назад', '6 дней назад', '5 дней назад', '4 дня назад', '3 дня назад', 'позавчера', 'вчера', 'cегодня']
 
 
                                         },
@@ -90,7 +90,7 @@ html(lang='en')
                                     th Время ответа
                             tbody
                                 -for (let i = 0; i < projects.length; i++)
-                                    +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],timeresp[i])
+                                    +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],Math.round(timeresp[i]))
 
 
         include footer.pug

@@ -29,7 +29,7 @@ html(lang='en')
                   th СР. Время ответа, сек
               tbody
               - for(var i=0; i<managers.length; i++)
-                +rowTable(managers[i].name, messagesGroup[i].count, messagesLs[i].count, managers[i].count, srTimeAns[i].dataValues.avg)
+                +rowTable(managers[i].name, messgr[i], messls[i], managers[i].count, Math.round( timeresp[i]))
 
     include footer.pug
 
