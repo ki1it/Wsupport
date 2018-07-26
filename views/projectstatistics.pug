@@ -24,8 +24,8 @@ html(lang='en')
                                     th Кол-во ответов
                                     th СР. Время ответа
                             tbody
-                                - for(var i=0; i<managers.rowCount; i++)
-                                    +rowTable(managerName[i].rows[0].name, messages[i].rows[0].count, timeresp[i].rows[0].avg)
+                                - for(let i=0; i<managers.length; i++)
+                                    +rowTable(managerName[i][0].dataValues.name, messages[i], timeresp[i][0].dataValues.avg)
 
 
 

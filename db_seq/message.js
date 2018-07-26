@@ -19,11 +19,11 @@ const Message = sequelize.define('Message', {
     },
     to_id: {
       type: Sequelize.STRING,
-        unique:true
+
     },
     chat_id: {
       type: Sequelize.BIGINT,
-        unique:true
+
     },
     from_tp: {
       type: Sequelize.BOOLEAN,

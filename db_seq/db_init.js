@@ -1,7 +1,7 @@
 const Project = require('./project')
 const Message_in_Group = require('./message_in_group')
 const Message= require('./message')
-const Workerr = require('./worker')
+const Worker = require('./worker')
 // const Raffle = require('Raffle')
 
 //list_projects.hasMany(messages_group, { foreignKey:'chat_id', sourceKey:'chat_id',  onUpdate: 'cascade', onDelete: 'cascade' })
@@ -9,21 +9,27 @@ const Workerr = require('./worker')
 
 // Raffle.belongsTo(Lottery, { foreignKeyConstraint: true })
 // Winner.belongsTo(Raffle, { foreignKeyConstraint: true })
-Workerr.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
-Workerr.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
+Worker.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
+Worker.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
 Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
-
-
+Message_in_Group.belongsTo(Worker,{foreignKey: 'to_id',targetKey: 'tel_number'})
+Message.belongsTo(Worker, {foreignKey: 'to_id',sourceKey: 'tel_number'})
+Message_in_Group.belongsTo(Project, {foreignKey: 'chat_id',sourceKey: 'chat_id'})
 async function init() {
-
-    await Message_in_Group.sync({force:true});
-    await Project.sync({force:true});
-    await Workerr.sync({force:true});
-    await Message.sync({force:true});
+    await Worker.sync();
+    await Project.sync();
+    await Message_in_Group.sync();
+    await Message.sync();
 }
-init()
-    module.exports.init = init
+
+(async function f() {
+    //Worker.create({name: 'igor', tel_number: '+79628079299'})
+    await init();
+})()
+
+
+    //module.exports.init = init()
     module.exports.Project = Project
     module.exports.Message_in_Group = Message_in_Group
     module.exports.Message = Message
-    module.exports.Worker = Workerr
+    module.exports.Worker = Worker

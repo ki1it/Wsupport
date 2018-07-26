@@ -28,8 +28,8 @@ html(lang='en')
                   th Кол-во проектов
                   th СР. Время ответа, сек
               tbody
-              - for(var i=0; i<managers.rowCount; i++)
-                +rowTable(managers[i].dataValues.name, messagesGroup[i].dataValues.count, messagesLs[i].dataValues.count, managers[i].dataValues.count, srTimeAns[i].dataValues.avg)
+              - for(var i=0; i<managers.length; i++)
+                +rowTable(managers[i].name, messagesGroup[i].count, messagesLs[i].count, managers[i].count, srTimeAns[i].dataValues.avg)
 
     include footer.pug
 
