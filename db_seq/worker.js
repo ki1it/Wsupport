@@ -3,7 +3,6 @@ const Sequelize = require('sequelize');
 const Worker = sequelize.define('Worker', {
   name: {
       type: Sequelize.STRING,
-      allowNull: true
     },
     chat_id: {
       type: Sequelize.BIGINT,
@@ -11,7 +10,6 @@ const Worker = sequelize.define('Worker', {
     },
     tel_number: {
       type: Sequelize.STRING,
-      allowNull: true
     }
   });
   

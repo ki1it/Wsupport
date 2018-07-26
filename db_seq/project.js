@@ -1,5 +1,6 @@
 const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
+
 const Project = sequelize.define('Projects', {
     name: {
         type: Sequelize.STRING,

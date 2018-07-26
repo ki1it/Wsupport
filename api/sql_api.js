@@ -1,30 +1,31 @@
-var pgapi = require('../api/pg_api')
+let pgapi = require('../api/pg_api')
 
 async function GetProjects() {
-var result = await pgapi.pool.query('select * from new_schema.list_projects');
+let result = await pgapi.pool.query('select * from new_schema.list_projects');
 //console.log(result);
 return result;
 }
 async function GetManagers() {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.chat_id),new_schema.messages_group.to_id, ' +
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.chat_id),new_schema.messages_group.to_id, ' +
         'new_schema.list_sup_workers.name from new_schema.messages_group inner join  new_schema.list_sup_workers on(tel_number = to_id) group by to_id, name');
 //console.log(result);
     return result;
 }
+GetManagers()
 async function GetAllMessagesGroup() {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id),new_schema.messages_group.to_id' +
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id),new_schema.messages_group.to_id' +
         ' from new_schema.messages_group,new_schema.list_sup_workers where from_tp=true group by to_id order by to_id');
 //console.log(result);
     return result;
 }
 async function GetRespTime() {
-    var result = await pgapi.pool.query('select avg(new_schema.messages_group.react_time), new_schema.messages_group.to_id from new_schema.messages_group where from_tp = true group by to_id order by to_id');
+    let result = await pgapi.pool.query('select avg(new_schema.messages_group.react_time), new_schema.messages_group.to_id from new_schema.messages_group where from_tp = true group by to_id order by to_id');
 //console.log(result);
     return result;
 }
 
 async function GetAllMessagesLs() {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id),new_schema.messages.to_id ' +
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id),new_schema.messages.to_id ' +
         'from new_schema.messages where from_tp=true group by to_id order by to_id');
 //console.log(result);
     return result;
@@ -32,53 +33,53 @@ async function GetAllMessagesLs() {
 
 
 async function GetPersonId(name) {
-    var result = await pgapi.pool.query('select new_schema.list_sup_workers.tel_number from new_schema.list_sup_workers where name =$1',[name]);
+    let result = await pgapi.pool.query('select new_schema.list_sup_workers.tel_number from new_schema.list_sup_workers where name =$1',[name]);
 //console.log(result);
     return result;
 }
 // -----------------------------------------------
 async function GetProjectsById(tel) {
-    var result = await pgapi.pool.query('select new_schema.messages_group.chat_id from new_schema.messages_group where to_id=$1  group by chat_id', [tel]);
+    let result = await pgapi.pool.query('select new_schema.messages_group.chat_id from new_schema.messages_group where to_id=$1  group by chat_id', [tel]);
     return result
 }
 
 async function GetManagersByProjectId(chat_id) {
-    var result = await pgapi.pool.query('select new_schema.messages_group.to_id from new_schema.messages_group where chat_id=$1  group by to_id', [chat_id]);
+    let result = await pgapi.pool.query('select new_schema.messages_group.to_id from new_schema.messages_group where chat_id=$1  group by to_id', [chat_id]);
     return result
 }
 
 async function GetProjectName(chat_id) {
-    var result = await pgapi.pool.query('select new_schema.list_projects.name from new_schema.list_projects where chat_id = $1', [chat_id]);
+    let result = await pgapi.pool.query('select new_schema.list_projects.name from new_schema.list_projects where chat_id = $1', [chat_id]);
     return result
 }
 
 async function GetCountSendForProject(tel,chat_id) {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id)from new_schema.messages_group,new_schema.list_sup_workers where to_id = $1 and chat_id =$2 and from_tp = true ', [tel,chat_id]);
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id)from new_schema.messages_group,new_schema.list_sup_workers where to_id = $1 and chat_id =$2 and from_tp = true ', [tel,chat_id]);
     return result
 }
 
 
 async function GetCountGetForProject(tel,chat_id) {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id)from new_schema.messages_group,new_schema.list_sup_workers where to_id = $1 and chat_id =$2 and from_tp = false ', [tel,chat_id]);
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id)from new_schema.messages_group,new_schema.list_sup_workers where to_id = $1 and chat_id =$2 and from_tp = false ', [tel,chat_id]);
     return result
 }
 
 
 async function GetRespTimeForProject(tel,chat_id) {
-    var result = await pgapi.pool.query('select avg(new_schema.messages_group.react_time) from new_schema.messages_group where from_tp = true and to_id = $1 and chat_id = $2', [tel,chat_id]);
+    let result = await pgapi.pool.query('select avg(new_schema.messages_group.react_time) from new_schema.messages_group where from_tp = true and to_id = $1 and chat_id = $2', [tel,chat_id]);
     return result
 }
 async function GetMessForManager(tel) {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id) from new_schema.messages_group where from_tp=true and to_id = $1', [tel]);
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id) from new_schema.messages_group where from_tp=true and to_id = $1', [tel]);
     return result
 }
 
 async function GetMessForManagerLs(tel) {
-    var result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id) from new_schema.messages where from_tp=true and to_id = $1', [tel]);
+    let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages.id) from new_schema.messages where from_tp=true and to_id = $1', [tel]);
     return result
 }
 async function GetPersonName(id) {
-    var result = await pgapi.pool.query('select new_schema.list_sup_workers.name from new_schema.list_sup_workers where tel_number =$1',[id]);
+    let result = await pgapi.pool.query('select new_schema.list_sup_workers.name from new_schema.list_sup_workers where tel_number =$1',[id]);
 //console.log(result);
     return result;
 }

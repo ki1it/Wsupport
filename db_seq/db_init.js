@@ -13,15 +13,20 @@ const Worker = require('./worker')
 
 
 async function init() {
-  await Message_in_Group.sync();
-  await Project.sync();
-  await Worker.sync();
-  await Message.sync();
-    Worker.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
-    Worker.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
-    Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
+    await Message_in_Group.sync();
+    await Project.sync();
+    await Worker.sync();
+    await Message.sync();
+    await Worker.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
+    await Worker.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
+    await Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
+    Message_in_Group.belongsTo(Worker, {foreignKey: 'to_id', targetKey: 'tel_number'});
+    await Message_in_Group.sync();
+    await Project.sync();
+    await Worker.sync();
+    await Message.sync();
 }
-
+init()
     module.exports.init = init
     module.exports.Project = Project
     module.exports.Message_in_Group = Message_in_Group

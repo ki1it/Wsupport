@@ -7,7 +7,6 @@ const Message_in_Group = sequelize.define('Message_in_Group', {
     },
     message_id:{
         type: Sequelize.BIGINT,
-        allowNull:false
     },
     data: {
         type: Sequelize.DATEONLY,
@@ -20,7 +19,6 @@ const Message_in_Group = sequelize.define('Message_in_Group', {
     },
     to_id: {
         type: Sequelize.STRING,
-        allowNull: true,
     },
     chat_id: {
         type: Sequelize.BIGINT

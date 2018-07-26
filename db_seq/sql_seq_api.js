@@ -1,7 +1,7 @@
 let db = require('./db_init')
-const sequelize = require('./pgbase-connector');
 const Sequelize = require('sequelize');
-
+const sequelize = require('./pgbase-connector');
+db.init()
 // получить проекты
 async function GetProjects() {
     let result = await db.Project.findAll();
@@ -9,7 +9,7 @@ async function GetProjects() {
 }
 
 async function GetProjectName(chat_id) {
-    let result = await db.Project.getAll({
+    let result = await db.Project.findAll({
             col: 'name',
             where: {
                 chat_id: chat_id
@@ -24,7 +24,6 @@ async function GetCountSendForProject(tel, chat_id) {
     let result = await db.Message_in_Group.count({
         col: 'id',
         distinct: true,
-        include: [Worker],
         where: {
             from_tp: true,
             chat_id: chat_id,
@@ -51,17 +50,21 @@ async function GetCountGetForProject(tel, chat_id) {
 
 // среднее время ответа
 async function GetRespTimeForProject(tel, chat_id) {
-    let result = await db.Message_in_Group.findAll(sequelize.fn('AVG', {
-        col: 'react_time',
-        where: {
-            from_tp: true,
-            to_id: tel,
-            chat_id: chat_id
-        }
-    }))
+    let result = await db.Message_in_Group.query('select avg(Message_in_Group.react_time) from ' +
+        'Message_in_Group where from_tp = true and to_id = :to_id and chat_id = :chat_id',{
+        replacements:{to_id:tel, chat_id:chat_id},type: Sequelize.QueryTypes.SELECT
+    })
+    // let result = await db.Message_in_Group.findAll(sequelize.fn('AVG', {
+    //     col: 'react_time',
+    //     where: {
+    //         from_tp: true,
+    //         to_id: tel,
+    //         chat_id: chat_id
+    //     }
+    // }))
     return result
 }
-
+//GetRespTimeForProject('+79069624310', -1001300656234)
 //
 async function GetMessForManager(tel) {
     let result = await db.Message_in_Group.count({
@@ -99,10 +102,10 @@ async function GetMessForManagerLs(tel) {
     })
     return result
 }
-
 async function GetManagersByProjectId(chat_id) {
-    let result = await db.Message_in_Group.getAll({
-        col: 'to_id',
+
+    let result = await db.Message_in_Group.findAll({
+        attributes:['to_id'],
         group: ['to_id'],
         where: {
             chat_id: chat_id
@@ -172,17 +175,24 @@ async function GetRespTime() {
         }))
     return result;
 }
+// async function GetManagers() {
+//     let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.chat_id),new_schema.messages_group.to_id, ' +
+//         'new_schema.list_sup_workers.name from new_schema.messages_group inner join  new_schema.list_sup_workers on(tel_number = to_id) group by to_id, name');
+// //console.log(result);
+//     return result;
+// }
 
 async function GetManagers() {
+    db.init()
     let result = await db.Message_in_Group.count({
+        attributes:['to_id', 'name'],
         col: 'chat_id',
-        include: ['Worker'],
+        include: [db.Worker],
         group: ['to_id', 'name']
     })
     return result;
 }
-
-
+GetManagers()
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
 module.exports.GetPersonName = GetPersonName

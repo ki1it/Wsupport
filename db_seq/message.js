@@ -19,11 +19,9 @@ const Message = sequelize.define('Message', {
     },
     to_id: {
       type: Sequelize.STRING,
-      allowNull: true,
     },
     chat_id: {
       type: Sequelize.BIGINT,
-      allowNull: true
     },
     from_tp: {
       type: Sequelize.BOOLEAN,
