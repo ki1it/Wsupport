@@ -9,17 +9,13 @@ const Workerr = require('./worker')
 
 // Raffle.belongsTo(Lottery, { foreignKeyConstraint: true })
 // Winner.belongsTo(Raffle, { foreignKeyConstraint: true })
-
+Workerr.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
+Workerr.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
+Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
 
 
 async function init() {
-    await Message_in_Group.sync({force:true});
-    await Project.sync({force:true});
-    await Workerr.sync({force:true});
-    await Message.sync({force:true});
-     Workerr.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
-     Workerr.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
-     Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
+
     await Message_in_Group.sync({force:true});
     await Project.sync({force:true});
     await Workerr.sync({force:true});
