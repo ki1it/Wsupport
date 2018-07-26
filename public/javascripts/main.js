@@ -4,13 +4,9 @@ fixFooter();
 
 var userLang = navigator.language || navigator.userLanguage;
 console.log(userLang);
-if (userLang == "ru-RU") {
-  $('.ru').show();
-  $('.en').hide();
-}
-else {
-  $('.en').show();
-  $('.ru').hide();
+if (userLang != "ru-RU" && userLang != "ru" && userLang != "RU") {
+    $('.en').show();
+    $('.ru').hide();
 }
 
 
