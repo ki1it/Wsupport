@@ -25,6 +25,9 @@ router.get('', async function(req, res, next) {
     let timeresp = []
     let countAllMes = await sql_api.GetMessForManager(current_tel)
     let countAllMesLs = await sql_api.GetMessForManagerLs(current_tel)
+    let chartmess = await sql_api.GetMessForPersonForWeek(current_tel)
+    chartmess.reverse()
+    chartmess = '['+chartmess.toString()+']'
     for (let i = 0; i<projects.length;i++)
     {
        projectsNames.push(await sql_api.GetProjectName(projects[i].dataValues.chat_id))
@@ -38,6 +41,7 @@ router.get('', async function(req, res, next) {
 
     }
     res.render('manager', {
+        chartmess:chartmess,
         //timeAnsProjects: timeAnsProjects,
         //ansProjects: ansProjects,
         //quesProjects: quesProjects,

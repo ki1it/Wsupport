@@ -5,10 +5,10 @@ var db = require('../db_seq/db_init')
 async function initClients() {
     const clients = {}
     const credentials = {
-        agent_tp1: {type: 'user', value: '+79967090026'},
-        agent_tp2: {type: 'user', value: '+79021419412'},
-        agent_tp3: {type: 'user', value: '+79021419479'},
-        agent_tp4: {type: 'user', value: '+79021423788'}
+        // agent_tp1: {type: 'user', value: '+79967090026'},
+        // agent_tp2: {type: 'user', value: '+79021419412'},
+        // agent_tp3: {type: 'user', value: '+79021419479'},
+        // agent_tp4: {type: 'user', value: '+79021423788'}
     }
     for (const key in credentials) {
         try {
