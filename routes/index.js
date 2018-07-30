@@ -13,10 +13,9 @@ router.get('/', async function(req, res, next) {
         // .catch(e =>
         //     console.error(e.stack))
         // кол
-    let countProject = undefined
-    let namesProject = []
-    let chatIDs = []
 
+    var nm;
+    var ch;
   res.render('index', { projects : projects});
 
 

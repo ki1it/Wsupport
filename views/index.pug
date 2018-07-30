@@ -2,6 +2,7 @@ doctype
 html(lang='en')
   head
     include head.pug
+
       mixin ProjSlot(namee, chatID)
         div(class="uk-width-1-4@m")
           div(class="uk-card uk-card-default uk-card-small uk-card-body")
@@ -25,9 +26,9 @@ html(lang='en')
             - for(var i=0; i<projects.length; i++)
               +ProjSlot(projects[i].dataValues.name, projects[i].dataValues.chat_id)
 
-                                                       
 
-    
+
+
          
     include footer.pug
 

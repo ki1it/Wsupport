@@ -13,7 +13,7 @@ if (userLang != "ru-RU" && userLang != "ru" && userLang != "RU") {
 
 $(document).ready(function(){
 
-
+    // Добавить работника
     $('#send_number').click(function(){
         var number = $('.number').val();
         console.log(number)
@@ -26,13 +26,13 @@ $(document).ready(function(){
         console.log(code)
     })
 
+        // ИЗМЕНЕНИЕ ПРОЕКТА
     $('.uk-width-1-1').change( function(e){
         var ch =  $(e.currentTarget).context.nextSibling.firstChild.textContent;
-        var ch = ch.substr(1, ch.length-1);
+        var  ch = ch.substr(1, ch.length - 1);
         console.log(ch);
         var nm = $(e.currentTarget).context.firstChild.value;
         console.log(nm);
-        ChangeName(nm, ch);
     })
 
   $('#sender').click(function(){
