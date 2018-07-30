@@ -132,9 +132,8 @@ async function GetManagersByProjectId(chat_id) {
 }
 
 async function GetAllMessagesLs() {
-    let result = await db.Message.count({
-        distinct: true,
-        col: "id",
+    let result = await db.Message.findAll({
+        attributes: ['to_id', [sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('message_id'))), "count"]],
         where: {
             from_tp: true
         },
@@ -147,9 +146,8 @@ async function GetAllMessagesLs() {
 }
 
 async function GetAllMessagesGroup() {
-    let result = await db.Message_in_Group.count({
-        distinct: true,
-        col: "id",
+    let result = await db.Message_in_Group.findAll({
+        attributes: ['to_id', [sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('message_id'))), "count"]],
         where: {
             from_tp: true
         },
@@ -159,7 +157,6 @@ async function GetAllMessagesGroup() {
     })
     return result;
 }
-
 async function GetPersonId(name) {
     let result = await db.Worker.findAll({
         where: {
@@ -213,17 +210,21 @@ async function GetRespTime() {
 // }
 
 async function GetManagers() {
-    let result = await db.Message_in_Group.count({
-        attributes: ['to_id', 'Worker.name'],
-        col: 'chat_id',
+    let result = await db.Message_in_Group.findAll({
+        attributes: ['to_id', 'Worker.name',[sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('chat_id'))), "count"]],
         include: [{model: db.Worker, as: 'Worker'}],
-        group: ['to_id', 'name']
+        group: ['to_id', 'name'],
+        order: ['to_id'],
+        where: {
+            from_tp:true
+        }
     })
         .catch((err) => {
             console.log(err)
         })
     return result;
 }
+GetManagers()
 
 async function GetMessForPersonForWeek(tel) {
     const Op = Sequelize.Op;
