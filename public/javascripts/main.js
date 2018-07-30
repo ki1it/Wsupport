@@ -13,6 +13,15 @@ if (userLang != "ru-RU" && userLang != "ru" && userLang != "RU") {
 
 $(document).ready(function(){
 
+    $('.uk-width-1-1').change( function(e){
+        var ch =  $(e.currentTarget).context.nextSibling.firstChild.textContent;
+        var ch = ch.substr(1, ch.length-1);
+        console.log(ch);
+        var value = $(e.currentTarget).context.firstChild.value;
+        console.log(value);
+
+    })
+
   $('#sender').click(function(){
 
     var name = $('.name').val();

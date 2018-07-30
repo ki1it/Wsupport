@@ -5,9 +5,8 @@ html(lang='en')
       mixin ProjSlot(namee, chatID)
         div(class="uk-width-1-4@m")
           div(class="uk-card uk-card-default uk-card-small uk-card-body")
-            div(class="uk-width-1-1")
-              h4
-                input(placeholder=namee class="uk-form-blank uk-width-small uk-input")
+            div(class="uk-width-1-1" value=chatID)
+                input(placeholder=namee class="uk-form-blank uk-width-small uk-input inp")
             div(uk-grid)
               div(class="uk-width-1-2@m")
                 a(href="http://t.me/"+chatID) @#{chatID}
