@@ -29,8 +29,9 @@ async function init() {
 (async function f() {
 
     await init();
-    //Worker.create({name: 'alex_andmin', tel_number: '+79021419479'})
-    Worker.create({name:'kirill',tel_number: '+79069624310'})
+    // Worker.create({name: 'alex_andmin', tel_number: '+79021419479'})
+    //Worker.create({name: 'Julia admin', tel_number: '+79021423788'})
+    // Worker.create({name:'kirill',tel_number: '+79069624310'})
 })()
 
 

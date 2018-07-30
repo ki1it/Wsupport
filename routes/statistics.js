@@ -19,19 +19,19 @@ router.get('/', async function (req, res, next) {
     let timeresp = []
     for (let i = 0; i < managers.length; i++) {
 
-        if (messagesGroup.length == 0 || messagesGroup[i].length == 0) {
+        if (messagesGroup.length === 0 || messagesGroup[i].length === 0 || messagesGroup === undefined) {
             messgr.push(0)
         }
         else
-            messgr.push(messagesGroup[i].count)
+            messgr.push(messagesGroup[i].dataValues.count)
 
-        if (messagesLs.length == 0 ||messagesLs[i].length == 0) {
+        if (messagesLs.length === 0 ||messagesLs[i].length === 0 || messagesLs === undefined) {
             messls.push(0)
         }
         else
-            messls.push(messagesLs[i].count)
+            messls.push(messagesLs[i].dataValues.count)
 
-        if (srTimeAns.length == 0 || srTimeAns[i].length == 0) {
+        if (srTimeAns.length == 0 || srTimeAns[i].length == 0 || srTimeAns === undefined) {
             timeresp.push(0)
         }
         else
