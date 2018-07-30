@@ -216,9 +216,9 @@ async function GetRespTime() {
 
 async function GetManagers() {
     let result = await db.Message_in_Group.findAll({
-        attributes: ['to_id', 'Worker.name',[sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('chat_id'))), "count"]],
+        attributes: ['Message_in_Group.to_id', 'Worker.name', [sequelize.fn('count', sequelize.col('Message_in_Group.chat_id')), "count"]],
         include: [{model: db.Worker, as: 'Worker'}],
-        group: ['to_id', 'name'],
+        group: ['to_id', 'name', 'Worker.id'],
         order: ['to_id'],
         where: {
             from_tp:true
@@ -229,7 +229,6 @@ async function GetManagers() {
         })
     return result;
 }
-GetManagers()
 
 async function GetMessForPersonForWeek(tel) {
     const Op = Sequelize.Op;
