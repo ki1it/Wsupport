@@ -13,6 +13,19 @@ if (userLang != "ru-RU" && userLang != "ru" && userLang != "RU") {
 
 $(document).ready(function(){
 
+
+    $('#send_number').click(function(){
+        var number = $('.number').val();
+        console.log(number)
+    })
+
+    $('#add_employee').click(function(){
+        var number = $('.number').val();
+        var code = $('.code').val();
+        console.log(number);
+        console.log(code)
+    })
+
     $('.uk-width-1-1').change( function(e){
         var ch =  $(e.currentTarget).context.nextSibling.firstChild.textContent;
         var ch = ch.substr(1, ch.length-1);
