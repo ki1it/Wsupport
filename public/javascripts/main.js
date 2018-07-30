@@ -30,9 +30,9 @@ $(document).ready(function(){
         var ch =  $(e.currentTarget).context.nextSibling.firstChild.textContent;
         var ch = ch.substr(1, ch.length-1);
         console.log(ch);
-        var value = $(e.currentTarget).context.firstChild.value;
-        console.log(value);
-
+        var nm = $(e.currentTarget).context.firstChild.value;
+        console.log(nm);
+        ChangeName(nm, ch);
     })
 
   $('#sender').click(function(){

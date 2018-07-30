@@ -9,6 +9,11 @@ async function GetProjects() {
     return result;
 }
 
+async function ChangeName(newName, ch){
+   let result =  await db.Project.update({name: newName, where:{chat_id: ch}});
+    return result;
+}
+
 async function GetProjectName(chat_id) {
     let result = await db.Project.findAll({
             attributes: ['name'],
@@ -281,3 +286,4 @@ module.exports.GetAllMessagesGroup = GetAllMessagesGroup
 module.exports.GetAllMessagesLs = GetAllMessagesLs
 module.exports.GetPersonId = GetPersonId
 module.exports.GetMessForPersonForWeek = GetMessForPersonForWeek
+module.exports.ChangeName = ChangeName
