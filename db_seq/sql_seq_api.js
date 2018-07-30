@@ -237,7 +237,10 @@ async function GetMessForPersonForWeek(tel) {
                 createdAt: {
                     [Op.gt]: moment().subtract(i+1, 'days').toDate(),
                     [Op.lt]: moment().subtract(i, 'days').toDate()
-            }
+            },
+            from_tp:true
+
+
         }
     })
         .catch((err) => {
@@ -246,6 +249,20 @@ async function GetMessForPersonForWeek(tel) {
         result.push(res)
     }
     return result;
+}
+
+async function DownloadMessForProject(chat_id){
+    let messansw = await db.Message_in_Group.findAll(
+        {
+            where:{
+                reply_to:{
+                    [Op.ne]:0
+                },
+                from_tp:true
+            }
+        }
+    )
+
 }
 
 module.exports.GetProjects = GetProjects

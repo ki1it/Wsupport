@@ -16,6 +16,10 @@ Message_in_Group.belongsTo(Worker,{foreignKey: 'to_id',targetKey: 'tel_number'})
 Message.belongsTo(Worker, {foreignKey: 'to_id',sourceKey: 'tel_number'})
 Message_in_Group.belongsTo(Project, {foreignKey: 'chat_id',sourceKey: 'chat_id'})
 async function init() {
+    // await Worker.sync({force:true});
+    // await Project.sync({force:true});
+    // await Message_in_Group.sync({force:true});
+    // await Message.sync({force:true});
     await Worker.sync();
     await Project.sync();
     await Message_in_Group.sync();
@@ -25,7 +29,8 @@ async function init() {
 (async function f() {
 
     await init();
-    //Worker.create({name: 'kirill', tel_number: '+79069624310'})
+    //Worker.create({name: 'alex_andmin', tel_number: '+79021419479'})
+    Worker.create({name:'kirill',tel_number: '+79069624310'})
 })()
 
 

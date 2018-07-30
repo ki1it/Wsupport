@@ -5,9 +5,10 @@ var db = require('../db_seq/db_init')
 async function initClients() {
     const clients = {}
     const credentials = {
+        agent_tp0:{type: 'user', value: '+79069624310'},
         // agent_tp1: {type: 'user', value: '+79967090026'},
         // agent_tp2: {type: 'user', value: '+79021419412'},
-        // agent_tp3: {type: 'user', value: '+79021419479'},
+        //agent_tp3: {type: 'user', value: '+79021419479'},
         // agent_tp4: {type: 'user', value: '+79021423788'}
     }
     for (const key in credentials) {
@@ -44,6 +45,7 @@ async function call() {
                             message_id: update['message']['reply_to_message_id']
                         }
                         }).then(function (res) {
+                            //баг
                         repl_time = update['message']['date'] - res["0"].dataValues.timest
                         console.log(repl_time)
                     })
@@ -71,7 +73,8 @@ async function call() {
                         chat_id: update['message']['chat_id'],
                         from_tp: update['message']['is_outgoing'],
                         timest: update['message']['date'],
-                        react_time: repl_time
+                        react_time: repl_time,
+                        reply_to: update['message']['reply_to_message_id']
                     })
                     // await pgapi.pool.query('INSERT INTO new_schema.messages(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
                     //     update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
@@ -116,7 +119,8 @@ async function call() {
                         chat_id: update['message']['chat_id'],
                         from_tp: update['message']['is_outgoing'],
                         timest: update['message']['date'],
-                        react_time: repl_time
+                        react_time: repl_time,
+                        reply_to: update['message']['reply_to_message_id']
                     })
                     // await pgapi.pool.query('INSERT INTO new_schema.messages_group(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
                     //     update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],

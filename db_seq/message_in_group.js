@@ -25,6 +25,10 @@ const Message_in_Group = sequelize.define('Message_in_Group', {
         type: Sequelize.BIGINT,
 
     },
+    reply_to: {
+        type: Sequelize.BIGINT,
+        allowNull: true
+    },
     from_tp: {
         type: Sequelize.BOOLEAN,
         allowNull: true

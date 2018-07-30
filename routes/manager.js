@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var moment = require('moment');
 var sql_api = require('../db_seq/sql_seq_api');
 
 // var srTime = stuff.srTime // среднее время ответа
@@ -26,7 +26,12 @@ router.get('', async function(req, res, next) {
     let countAllMes = await sql_api.GetMessForManager(current_tel)
     let countAllMesLs = await sql_api.GetMessForManagerLs(current_tel)
     let chartmess = await sql_api.GetMessForPersonForWeek(current_tel)
-    chartmess.reverse()
+    let days = []
+    for (let i=0;i<7;i++)
+    {
+        days.push('\''+moment().subtract(i,'days').format("MMM Do YY").toString()+'\'')
+    }
+    days = '['+days.toString()+']'
     chartmess = '['+chartmess.toString()+']'
     for (let i = 0; i<projects.length;i++)
     {
@@ -42,6 +47,7 @@ router.get('', async function(req, res, next) {
     }
     res.render('manager', {
         chartmess:chartmess,
+        days:days,
         //timeAnsProjects: timeAnsProjects,
         //ansProjects: ansProjects,
         //quesProjects: quesProjects,

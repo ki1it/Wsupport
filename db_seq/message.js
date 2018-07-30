@@ -29,6 +29,10 @@ const Message = sequelize.define('Message', {
       type: Sequelize.BOOLEAN,
       allowNull: true
     },
+    reply_to: {
+        type: Sequelize.BIGINT,
+        allowNull: true
+    },
     react_time: {
       type: Sequelize.BIGINT,
       allowNull: true
