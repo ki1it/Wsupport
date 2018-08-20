@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('./pgbase-connector');
 var moment = require('moment');
 
+
 // получить проекты
 async function GetProjects() {
     let result = await db.Project.findAll();
@@ -230,16 +231,19 @@ async function GetManagers() {
     return result;
 }
 
-async function GetMessForPersonForWeek(tel) {
+async function GetMessForPersonForWeek(tel,startDate,finDate) {
     const Op = Sequelize.Op;
     let result = []
-    for (i = 0; i < 7; i++) {
+    let col = finDate.getTime()-startDate.getTime()/ (1000*60*60*24)
+    for (i = 0; i < col; i++) {
         let res = await db.Message_in_Group.count({
             distinct: true,
             col: 'message_id',
             where: {
                 to_id: tel,
                 createdAt: {
+                    //[Op.gt]:
+
                     [Op.gt]: moment().subtract(i+1, 'days').toDate(),
                     [Op.lt]: moment().subtract(i, 'days').toDate()
             },
@@ -255,7 +259,6 @@ async function GetMessForPersonForWeek(tel) {
     }
     return result;
 }
-
 async function DownloadMessForProject(chat_id){
     let messansw = await db.Message_in_Group.findAll(
         {

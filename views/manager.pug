@@ -9,6 +9,7 @@ html(lang='en')
                     td #{ques}
                     td #{ans}
                     td #{time}
+
     body
         div.uk-container
             include header.pug
@@ -22,6 +23,8 @@ html(lang='en')
                             h3 @ #{curManager}
                             p Отправлено сообщений в группах: #{countAllMes}
                             p Отправлено сообщений в лс: #{countAllMesLs}
+                            input( id = 'datapick', type="text", data-range="true", data-multiple-dates-separator=" - ", data-language="en", class="datepicker-here")
+
                             //p Ответов: #{countAns}
                             //p Ср. время ответа: #{srTime}
                         div(class="uk-width-2-3@m")
@@ -58,7 +61,7 @@ html(lang='en')
                                         tooltip: {
 
                                             pointFormat: '<tr><td style="color: {series.color}">{point.y} </td>' +
-                                            '<td style="text-align: right"><b>ответов</b></td></tr>'
+                                                '<td style="text-align: right"><b>ответов</b></td></tr>'
                                         },
                                         plotOptions: {
                                             area: {
@@ -90,11 +93,10 @@ html(lang='en')
                                     th Время ответа
                             tbody
                                 -for (let i = 0; i < projects.length; i++)
-                                    +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],Math.round(timeresp[i]))
+                                +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],Math.round(timeresp[i]))
 
 
         include footer.pug
-
 
 
 
