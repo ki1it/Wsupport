@@ -23,8 +23,14 @@ html(lang='en')
                             h3 @ #{curManager}
                             p Отправлено сообщений в группах: #{countAllMes}
                             p Отправлено сообщений в лс: #{countAllMesLs}
-                            input( id = 'datapick', type="text", data-range="true", data-multiple-dates-separator=" - ", data-language="en", class="datepicker-here")
-
+                            form( action="/calendar", method="post" class="form" id='calform' enctype="application/json")
+                                input(name='dates' type="text", data-range="true", data-multiple-dates-separator="-",  class="datepicker-here")
+                                button(type="submit" formaction="/filter" class="uk-button uk-button-primary top-margin" id="filter" href="#")
+                                    span.ru Фильтровать
+                                    span.en Filter
+                                button(type="submit" formaction="/download" class="uk-button uk-button-primary top-margin" id="download" href="#")
+                                    span.ru Скачать сообщения
+                                    span.en Download messages
                             //p Ответов: #{countAns}
                             //p Ср. время ответа: #{srTime}
                         div(class="uk-width-2-3@m")
@@ -93,7 +99,7 @@ html(lang='en')
                                     th Время ответа
                             tbody
                                 -for (let i = 0; i < projects.length; i++)
-                                +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],Math.round(timeresp[i]))
+                                    +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],Math.round(timeresp[i]))
 
 
         include footer.pug

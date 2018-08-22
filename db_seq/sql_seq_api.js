@@ -231,11 +231,12 @@ async function GetManagers() {
     return result;
 }
 
-async function GetMessForPersonForWeek(tel,startDate,finDate) {
+async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
     const Op = Sequelize.Op;
     let result = []
-    let col = finDate.getTime()-startDate.getTime()/ (1000*60*60*24)
-    for (i = 0; i < col; i++) {
+    let datetemp = startDate.clone()
+    for (let i = 0; i <= cou; i++) {
+
         let res = await db.Message_in_Group.count({
             distinct: true,
             col: 'message_id',
@@ -244,8 +245,8 @@ async function GetMessForPersonForWeek(tel,startDate,finDate) {
                 createdAt: {
                     //[Op.gt]:
 
-                    [Op.gt]: moment().subtract(i+1, 'days').toDate(),
-                    [Op.lt]: moment().subtract(i, 'days').toDate()
+                    [Op.gt]: datetemp.toDate(),
+                    [Op.lt]: datetemp.add(1, 'days').toDate()
             },
             from_tp:true
 
@@ -259,18 +260,35 @@ async function GetMessForPersonForWeek(tel,startDate,finDate) {
     }
     return result;
 }
-async function DownloadMessForProject(chat_id){
-    let messansw = await db.Message_in_Group.findAll(
-        {
-            where:{
-                reply_to:{
-                    [Op.ne]:0
+
+async function DownloadMessForProject(tel, startDate, finDate, cou){
+    const Op = Sequelize.Op;
+    let result = []
+    let datetemp = startDate.clone()
+    for (let i = 0; i <= cou; i++) {
+
+        let res = await db.Message_in_Group.count({
+            distinct: true,
+            col: 'message_id',
+            where: {
+                to_id: tel,
+                createdAt: {
+                    //[Op.gt]:
+
+                    [Op.gt]: datetemp.toDate(),
+                    [Op.lt]: datetemp.add(1, 'days').toDate()
                 },
                 from_tp:true
-            }
-        }
-    )
 
+
+            }
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+        result.push(res)
+    }
+    return result;
 }
 
 module.exports.GetProjects = GetProjects
@@ -288,5 +306,5 @@ module.exports.GetManagers = GetManagers
 module.exports.GetAllMessagesGroup = GetAllMessagesGroup
 module.exports.GetAllMessagesLs = GetAllMessagesLs
 module.exports.GetPersonId = GetPersonId
-module.exports.GetMessForPersonForWeek = GetMessForPersonForWeek
+module.exports.GetMessForPersonForTime = GetMessForPersonForTime
 module.exports.ChangeName = ChangeName

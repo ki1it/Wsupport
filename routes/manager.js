@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 var sql_api = require('../db_seq/sql_seq_api');
-var daterangepicker = require('daterangepicker');
 var $ = require("jquery");
 // var srTime = stuff.srTime // среднее время ответа
 // var countAns = 'нихуя';   // всего ответов
@@ -13,8 +12,16 @@ var $ = require("jquery");
 // var ansProjects = ['не знаю'];
 // var timeAnsProjects = ['долго'];
 var months = '[0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0]';
-
+var date1 = moment()
+var date2 = moment()
 /* GET manager page. */
+async function setDate1(date){
+    date1 = date
+}
+async function setDate2(date){
+
+    date2 = date
+}
 router.get('', async function(req, res, next) {
 
     let current_id = await sql_api.GetPersonId(req.query.id)
@@ -26,12 +33,15 @@ router.get('', async function(req, res, next) {
     let timeresp = []
     let countAllMes = await sql_api.GetMessForManager(current_tel)
     let countAllMesLs = await sql_api.GetMessForManagerLs(current_tel)
-    //let chartmess = await sql_api.GetMessForPersonForWeek(current_tel)
-    let chartmess  = [1,2,3,4,5,6,7]
+    let cou = date2.diff(date1,'days')
+    let chartmess = await sql_api.GetMessForPersonForTime(current_tel, date1, date2, cou)
+    //let chartmess  = [1,2,3,4,5,6,7,5,6,4,4,44,6,3,3,5,5,6,3]
     let days = []
-    for (let i=0;i<7;i++)
+    let datetemp = date1
+    for (let i=0;i<=cou;i++)
     {
-        days.push('\''+moment().subtract(i,'days').format("MMM Do YY").toString()+'\'')
+        days.push('\''+datetemp.format("MMM Do YY").toString()+'\'')
+        datetemp.add("days",1)
     }
     days = '['+days.toString()+']'
     chartmess = '['+chartmess.toString()+']'
@@ -67,9 +77,15 @@ router.get('', async function(req, res, next) {
         messsend: messsend,
         timeresp: timeresp,
     });
+
+});
+
+router.post('/filter', function (req, res) {
+    console.log(req.body.dates + " is added to top of the list.");
+
 });
 
 
-
-
 module.exports = router;
+module.exports.setDate1 = setDate1
+module.exports.setDate2 = setDate2
