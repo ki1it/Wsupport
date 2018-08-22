@@ -14,18 +14,27 @@ var $ = require("jquery");
 var months = '[0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0]';
 var date1 = moment()
 var date2 = moment()
+var current_tel = undefined
+function get_tel()
+{
+    return current_tel
+}
 /* GET manager page. */
-async function setDate1(date){
+function setDate1(date){
     date1 = date
 }
-async function setDate2(date){
+function setDate2(date){
 
     date2 = date
+}
+
+function download(text) {
+    window.open(encodeURI(text), "_blank")
 }
 router.get('', async function(req, res, next) {
 
     let current_id = await sql_api.GetPersonId(req.query.id)
-    let current_tel = current_id["0"].dataValues.tel_number
+    current_tel = current_id["0"].dataValues.tel_number
     let projects = await sql_api.GetProjectsById(current_tel)
     let projectsNames = []
     let messget = []
@@ -89,3 +98,5 @@ router.post('/filter', function (req, res) {
 module.exports = router;
 module.exports.setDate1 = setDate1
 module.exports.setDate2 = setDate2
+module.exports.get_tel = get_tel
+module.exports.download = download

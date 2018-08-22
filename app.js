@@ -34,13 +34,22 @@ app.use('/filter', function (req, res) {
     managerRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
     res.redirect(req.headers.referer)
 });
-// app.use('/clear', function (req, res) {
-//     managerRoute.date1 = new Date()
-//     managerRoute.date1.set
-//     managerRoute.date2 = Date.parse(dates[1])
-//     res.send('hi')
-//     //res.redirect(req.headers.referer)
-// });
+app.use('/download',async function (req, res) {
+    let dates = req.body.dates.split('-')
+    var sql_api = require('./db_seq/sql_seq_api');
+    let tel = managerRoute.get_tel()
+    let messdown = await sql_api.DownloadMessPersonForTime(tel,
+        moment(dates[0], 'DD.MM.YYYY'), moment(dates[1], 'DD.MM.YYYY'))
+
+    res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+    res.set('Content-Type', 'text/csv');
+    res.status(200).send(messdown);
+    //await res.download(encodeURI(messdown))
+    //managerRoute.download('mess.csv',messdown)
+    //managerRoute.download(messdown)
+    //res.redirect(req.headers.referer)
+    //res.redirect(req.headers.referer)
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

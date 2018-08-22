@@ -261,34 +261,87 @@ async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
     return result;
 }
 
-async function DownloadMessForProject(tel, startDate, finDate, cou){
+async function DownloadMessPersonForTime(tel, startDate, finDate){
     const Op = Sequelize.Op;
-    let result = []
-    let datetemp = startDate.clone()
-    for (let i = 0; i <= cou; i++) {
+    let result1 = []
+    let result2 = []
+    let result3 = []
+    let result4 = []
+    let res1 = await db.Message_in_Group.findAll({
+        attributes: ['reply_to', 'text','createdAt'],
+        where: {
+            to_id: tel,
+            reply_to: {[Op.ne]: 0},
+            createdAt: {
 
-        let res = await db.Message_in_Group.count({
-            distinct: true,
-            col: 'message_id',
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
+            from_tp: true
+
+
+        }
+    })
+        .catch((err) => {
+            console.log(err)
+        })
+    result1.push(res1)
+    for (let i = 0; i < result1[0].length; i++) {
+        let res2 = await db.Message_in_Group.findAll({
+            attributes: ['text','createdAt'],
             where: {
-                to_id: tel,
-                createdAt: {
-                    //[Op.gt]:
-
-                    [Op.gt]: datetemp.toDate(),
-                    [Op.lt]: datetemp.add(1, 'days').toDate()
-                },
-                from_tp:true
-
-
+                message_id: result1[0][i].dataValues.reply_to
             }
         })
             .catch((err) => {
                 console.log(err)
             })
-        result.push(res)
+        result2.push(res2)
     }
-    return result;
+    let res3 = await db.Message.findAll({
+        attributes: ['reply_to', 'text','createdAt'],
+        where: {
+            to_id: tel,
+            reply_to: {[Op.ne]: 0},
+            createdAt: {
+
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
+            from_tp: true
+
+
+        }
+    })
+        .catch((err) => {
+            console.log(err)
+        })
+    result3.push(res3)
+    for (let i = 0; i < result3[0].length; i++) {
+        let res4 = await db.Message.findAll({
+            attributes: ['text','createdAt'],
+            where: {
+                message_id: result3[0][i].dataValues.reply_to
+            }
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+        result4.push(res4)
+    }
+    var csv = 'Вопрос,Время вопроса,Ответ,Время ответа\n';
+    for (let i = 0; i < result1[0].length; i++) {
+        csv+=result2[i][0].dataValues.text.replace(/,/g,';')+','+result2[i][0].dataValues.createdAt+','+
+            result1[0][i].dataValues.text.replace(/,/g,';')+','+result1[0][i].dataValues.createdAt
+        csv += "\n";
+    }
+    csv+='Дальше,из,личных,сообщений\n'
+    for (let i = 0; i < result3[0].length; i++) {
+        csv+=result4[i][0].dataValues.text.replace(/,/g,';')+','+result4[i][0].dataValues.createdAt+','+
+            result3[0][i].dataValues.text.replace(/,/g,';')+','+result3[0][i].dataValues.createdAt
+        csv += "\n";
+    }
+    return csv;
 }
 
 module.exports.GetProjects = GetProjects
@@ -308,3 +361,4 @@ module.exports.GetAllMessagesLs = GetAllMessagesLs
 module.exports.GetPersonId = GetPersonId
 module.exports.GetMessForPersonForTime = GetMessForPersonForTime
 module.exports.ChangeName = ChangeName
+module.exports.DownloadMessPersonForTime = DownloadMessPersonForTime
