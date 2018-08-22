@@ -10,8 +10,30 @@ async function GetProjects() {
     return result;
 }
 
-async function ChangeName(newName, ch){
-   let result =  await db.Project.update({name: newName, where:{chat_id: ch}});
+async function ChangeName(newName, ch) {
+    let result = await db.Project.update({
+            name: newName,
+        }, {
+            where: {
+                chat_id: parseInt(ch)
+            },
+        returning: true,
+        plain: true
+        }
+    )
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    // let result =  await db.Project.update(
+    //  {name: newName},
+    //     {where:
+    //             {chat_id: ch}})
+    //     .catch((err) => {
+    //         console.log(err)
+    //     });
     return result;
 }
 
@@ -163,6 +185,7 @@ async function GetAllMessagesGroup() {
     })
     return result;
 }
+
 async function GetPersonId(name) {
     let result = await db.Worker.findAll({
         where: {
@@ -222,7 +245,7 @@ async function GetManagers() {
         group: ['to_id', 'name', 'Worker.id'],
         order: ['to_id'],
         where: {
-            from_tp:true
+            from_tp: true
         }
     })
         .catch((err) => {
@@ -247,28 +270,28 @@ async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
 
                     [Op.gt]: datetemp.toDate(),
                     [Op.lt]: datetemp.add(1, 'days').toDate()
-            },
-            from_tp:true
+                },
+                from_tp: true
 
 
-        }
-    })
-        .catch((err) => {
-            console.log(err)
+            }
         })
+            .catch((err) => {
+                console.log(err)
+            })
         result.push(res)
     }
     return result;
 }
 
-async function DownloadMessPersonForTime(tel, startDate, finDate){
+async function DownloadMessPersonForTime(tel, startDate, finDate) {
     const Op = Sequelize.Op;
     let result1 = []
     let result2 = []
     let result3 = []
     let result4 = []
     let res1 = await db.Message_in_Group.findAll({
-        attributes: ['reply_to', 'text','createdAt'],
+        attributes: ['reply_to', 'text', 'createdAt'],
         where: {
             to_id: tel,
             reply_to: {[Op.ne]: 0},
@@ -288,7 +311,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate){
     result1.push(res1)
     for (let i = 0; i < result1[0].length; i++) {
         let res2 = await db.Message_in_Group.findAll({
-            attributes: ['text','createdAt'],
+            attributes: ['text', 'createdAt'],
             where: {
                 message_id: result1[0][i].dataValues.reply_to
             }
@@ -299,7 +322,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate){
         result2.push(res2)
     }
     let res3 = await db.Message.findAll({
-        attributes: ['reply_to', 'text','createdAt'],
+        attributes: ['reply_to', 'text', 'createdAt'],
         where: {
             to_id: tel,
             reply_to: {[Op.ne]: 0},
@@ -319,7 +342,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate){
     result3.push(res3)
     for (let i = 0; i < result3[0].length; i++) {
         let res4 = await db.Message.findAll({
-            attributes: ['text','createdAt'],
+            attributes: ['text', 'createdAt'],
             where: {
                 message_id: result3[0][i].dataValues.reply_to
             }
@@ -331,14 +354,14 @@ async function DownloadMessPersonForTime(tel, startDate, finDate){
     }
     var csv = 'Вопрос,Время вопроса,Ответ,Время ответа\n';
     for (let i = 0; i < result1[0].length; i++) {
-        csv+=result2[i][0].dataValues.text.replace(/,/g,';')+','+result2[i][0].dataValues.createdAt+','+
-            result1[0][i].dataValues.text.replace(/,/g,';')+','+result1[0][i].dataValues.createdAt
+        csv += result2[i][0].dataValues.text.replace(/,/g, ';') + ',' + result2[i][0].dataValues.createdAt + ',' +
+            result1[0][i].dataValues.text.replace(/,/g, ';') + ',' + result1[0][i].dataValues.createdAt
         csv += "\n";
     }
-    csv+='Дальше,из,личных,сообщений\n'
+    csv += 'Дальше,из,личных,сообщений\n'
     for (let i = 0; i < result3[0].length; i++) {
-        csv+=result4[i][0].dataValues.text.replace(/,/g,';')+','+result4[i][0].dataValues.createdAt+','+
-            result3[0][i].dataValues.text.replace(/,/g,';')+','+result3[0][i].dataValues.createdAt
+        csv += result4[i][0].dataValues.text.replace(/,/g, ';') + ',' + result4[i][0].dataValues.createdAt + ',' +
+            result3[0][i].dataValues.text.replace(/,/g, ';') + ',' + result3[0][i].dataValues.createdAt
         csv += "\n";
     }
     return csv;

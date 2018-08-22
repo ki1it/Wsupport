@@ -12,7 +12,7 @@ var $ = require("jquery");
 // var ansProjects = ['не знаю'];
 // var timeAnsProjects = ['долго'];
 var months = '[0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0]';
-var date1 = moment()
+var date1 = moment().subtract(7,'days')
 var date2 = moment()
 var current_tel = undefined
 function get_tel()
@@ -40,6 +40,7 @@ router.get('', async function(req, res, next) {
     let messget = []
     let messsend = []
     let timeresp = []
+    let inputtext =date1.format('DD.MM.YYYY')+'-'+date2.format('DD.MM.YYYY')
     let countAllMes = await sql_api.GetMessForManager(current_tel)
     let countAllMesLs = await sql_api.GetMessForManagerLs(current_tel)
     let cou = date2.diff(date1,'days')
@@ -69,6 +70,7 @@ router.get('', async function(req, res, next) {
 
 
     res.render('manager', {
+        inputtext:inputtext,
         chartmess:chartmess,
         days:days,
         //timeAnsProjects: timeAnsProjects,

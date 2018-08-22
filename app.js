@@ -30,12 +30,26 @@ app.use('/manager', managerRoute);
 app.use('/projectstatistics', projstatRoute);
 app.use('/filter', function (req, res) {
     let dates = req.body.dates.split('-')
-    managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
-    managerRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
+    if (req.body.dates=="")
+    {
+        managerRoute.setDate1(moment().subtract(7,'days'))
+        managerRoute.setDate2(moment())
+    }else{
+        managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
+        managerRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
+    }
+
     res.redirect(req.headers.referer)
 });
+app.use('/changename',async function (req, res) {
+    var sql_api = require('./db_seq/sql_seq_api');
+    sql_api.ChangeName(req.body.name,req.body.chat)
+    console.log(req.body)
+})
+
 app.use('/download',async function (req, res) {
     let dates = req.body.dates.split('-')
+
     var sql_api = require('./db_seq/sql_seq_api');
     let tel = managerRoute.get_tel()
     let messdown = await sql_api.DownloadMessPersonForTime(tel,

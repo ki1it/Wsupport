@@ -27,12 +27,12 @@ $(document).ready(function(){
     })
 
         // ИЗМЕНЕНИЕ ПРОЕКТА
-    $('.uk-width-1-1').change( function(e){
-        var ch =  $(e.currentTarget).context.nextSibling.firstChild.textContent;
-        var  ch = ch.substr(1, ch.length - 1);
-        console.log(ch);
-        var nm = $(e.currentTarget).context.firstChild.value;
-        console.log(nm);
+    $('.uk-width-1-1').change( async function(e){
+        var chat =  $(e.currentTarget).context.nextSibling.firstChild.textContent;
+        var  chat = chat.substr(1, chat.length - 1);
+        var name = $(e.currentTarget).context.firstChild.value;
+        $.post('/changename', { chat: chat,name:name });
+
     })
 
   $('#sender').click(function(){

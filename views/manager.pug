@@ -24,7 +24,7 @@ html(lang='en')
                             p Отправлено сообщений в группах: #{countAllMes}
                             p Отправлено сообщений в лс: #{countAllMesLs}
                             form( action="/calendar", method="post" class="form" id='calform' enctype="application/json")
-                                input(name='dates' type="text", data-range="true", data-multiple-dates-separator="-",  class="datepicker-here")
+                                input(name='dates' type="text", data-range="true", data-multiple-dates-separator="-", value = inputtext,  class="datepicker-here")
                                 button(type="submit" formaction="/filter" class="uk-button uk-button-primary top-margin" id="filter" href="#")
                                     span.ru Фильтровать
                                     span.en Filter
