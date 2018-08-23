@@ -7,7 +7,7 @@ async function initClients() {
     const credentials = {
         agent_tp0:{type: 'user', value: '+79069624310'},
         //agent_tp1: {type: 'user', value: '+79967090026'},
-        // agent_tp2: {type: 'user', value: '+79021419412'},
+        //agent_tp2: {type: 'user', value: '+79021419412'},
         //agent_tp3: {type: 'user', value: '+79021419479'},
         //agent_tp4: {type: 'user', value: '+79021423788'}
     }
@@ -42,6 +42,7 @@ async function call() {
                 if (update['message']['reply_to_message_id'] != 0 && update['message']['is_outgoing']) {
                     await db.Message_in_Group.findAll({
                         where: {
+                            chat_id: update['message']['chat_id'],
                             message_id: update['message']['reply_to_message_id']
                         }
                         }).then(function (res) {

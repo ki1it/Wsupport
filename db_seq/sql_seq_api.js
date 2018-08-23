@@ -2,7 +2,7 @@ let db = require('./db_init')
 const Sequelize = require('sequelize');
 const sequelize = require('./pgbase-connector');
 var moment = require('moment');
-
+const Op = Sequelize.Op;
 
 // получить проекты
 async function GetProjects() {
@@ -52,14 +52,19 @@ async function GetProjectName(chat_id) {
 }
 
 // количество ответов в проекте
-async function GetCountSendForProject(tel, chat_id) {
+async function GetCountSendForProject(tel, chat_id, startDate, finDate) {
     let result = await db.Message_in_Group.count({
         distinct: true,
         col: 'id',
         where: {
             from_tp: true,
             chat_id: chat_id,
-            to_id: tel
+            to_id: tel,
+            createdAt: {
+
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
         }
     })
         .catch((err) => {
@@ -69,14 +74,19 @@ async function GetCountSendForProject(tel, chat_id) {
 }
 
 // количество принятых в проекте
-async function GetCountGetForProject(tel, chat_id) {
+async function GetCountGetForProject(tel, chat_id, startDate, finDate) {
     let result = await db.Message_in_Group.count({
         distinct: true,
         col: 'id',
         where: {
             from_tp: false,
             chat_id: chat_id,
-            to_id: tel
+            to_id: tel,
+            createdAt: {
+
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
         }
     })
         .catch((err) => {
@@ -86,14 +96,19 @@ async function GetCountGetForProject(tel, chat_id) {
 }
 
 // среднее время ответа
-async function GetRespTimeForProject(tel, chat_id) {
+async function GetRespTimeForProject(tel, chat_id, startDate, finDate) {
     let result = await
         db.Message_in_Group.findAll({
             attributes: ['to_id', [sequelize.fn('AVG', sequelize.col('react_time')), "avg"]],
             where: {
                 to_id: tel,
                 chat_id: chat_id,
-                from_tp: true
+                from_tp: true,
+                createdAt: {
+
+                    [Op.gt]: startDate.toDate(),
+                    [Op.lt]: finDate.toDate()
+                }
             },
             group: ['to_id'],
             order: ['to_id']
@@ -107,11 +122,15 @@ async function GetRespTimeForProject(tel, chat_id) {
 
 //GetRespTimeForProject('+79069624310', -1001300656234)
 //
-async function GetMessForManager(tel) {
+async function GetMessForManager(tel,startDate,finDate) {
     let result = await db.Message_in_Group.count({
         distinct: true,
         col: "id",
         where: {
+            createdAt: {
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
             from_tp: true,
             to_id: tel
         }
@@ -135,11 +154,15 @@ async function GetPersonName(tel_number) {
 }
 
 // колво сообщений для манагера в лс
-async function GetMessForManagerLs(tel) {
+async function GetMessForManagerLs(tel, startDate, finDate) {
     let result = await db.Message.count({
         distinct: true,
         col: "id",
         where: {
+            createdAt: {
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
             from_tp: true,
             to_id: tel
         }
@@ -204,6 +227,7 @@ async function GetProjectsById(tel) {
             attributes: ['chat_id'],
             group: ['chat_id'],
             where: {
+
                 to_id: tel
             }
         })
@@ -255,7 +279,7 @@ async function GetManagers() {
 }
 
 async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
-    const Op = Sequelize.Op;
+
     let result = []
     let datetemp = startDate.clone()
     for (let i = 0; i <= cou; i++) {
@@ -309,6 +333,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
             console.log(err)
         })
     result1.push(res1)
+    console.log('count: '+result1[0].length)
     for (let i = 0; i < result1[0].length; i++) {
         let res2 = await db.Message_in_Group.findAll({
             attributes: ['text', 'createdAt'],
@@ -327,7 +352,6 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
             to_id: tel,
             reply_to: {[Op.ne]: 0},
             createdAt: {
-
                 [Op.gt]: startDate.toDate(),
                 [Op.lt]: finDate.toDate()
             },
@@ -340,6 +364,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
             console.log(err)
         })
     result3.push(res3)
+    console.log('count: '+result3[0].length)
     for (let i = 0; i < result3[0].length; i++) {
         let res4 = await db.Message.findAll({
             attributes: ['text', 'createdAt'],
@@ -360,12 +385,12 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
         let str3 = 'Сообщение не найдено'
         let str4 = 'Сообщение не найдено'
 
-        if(result2[i][0].dataValues != undefined) {
+        if(result2[i][0] != undefined) {
             str1 = result2[i][0].dataValues.text.replace(/,/g, ';')
             str2 = result2[i][0].dataValues.createdAt
 
         }
-        if(result1[0][i].dataValues != undefined) {
+        if(result1[0][i] != undefined) {
             str3 = result1[0][i].dataValues.text.replace(/,/g, ';')
             str4 = result1[0][i].dataValues.createdAt
         }
@@ -381,12 +406,12 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
         let str3 = 'Сообщение не найдено'
         let str4 = 'Сообщение не найдено'
 
-        if(result4[i][0].dataValues != undefined) {
+        if(result4[i][0] != undefined) {
             str1 = result4[i][0].dataValues.text.replace(/,/g, ';')
             str2 = result4[i][0].dataValues.createdAt
 
         }
-        if(result3[0][i].dataValues != undefined) {
+        if(result3[0][i] != undefined) {
             str3 = result3[0][i].dataValues.text.replace(/,/g, ';')
             str4 = result3[0][i].dataValues.createdAt
         }

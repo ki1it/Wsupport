@@ -32,9 +32,11 @@ app.use('/filter', function (req, res) {
     let dates = req.body.dates.split('-')
     if (req.body.dates=="")
     {
-        managerRoute.setDate1(moment().subtract(7,'days'))
+        managerRoute.setAllPeriod(true)
+        managerRoute.setDate1(moment().subtract(40,'years'))
         managerRoute.setDate2(moment())
     }else{
+        managerRoute.setAllPeriod(false)
         managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
         managerRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
     }
@@ -52,9 +54,15 @@ app.use('/download',async function (req, res) {
 
     var sql_api = require('./db_seq/sql_seq_api');
     let tel = managerRoute.get_tel()
-    let messdown = await sql_api.DownloadMessPersonForTime(tel,
-        moment(dates[0], 'DD.MM.YYYY'), moment(dates[1], 'DD.MM.YYYY'))
-
+    let messdown = undefined
+    if (req.body.dates=="")
+    {
+        messdown = await sql_api.DownloadMessPersonForTime(tel,
+            moment().subtract(40,'years'), moment())
+    }else {
+        messdown = await sql_api.DownloadMessPersonForTime(tel,
+            moment(dates[0], 'DD.MM.YYYY'), moment(dates[1], 'DD.MM.YYYY'))
+    }
     res.setHeader('Content-disposition', 'attachment; filename=data.csv');
     res.set('Content-Type', 'text/csv');
     res.status(200).send(messdown);
