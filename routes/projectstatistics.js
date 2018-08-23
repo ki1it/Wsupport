@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 // var sql_api = require('../api/sql_api')
 var sql_api = require('../db_seq/sql_seq_api')
 /* GET statis page. */
@@ -11,8 +12,8 @@ router.get('', async function(req, res, next) {
     for (let i = 0; i<managers.length;i++)
     {
         managerName.push(await sql_api.GetPersonName(managers[i].dataValues.to_id))
-        messages.push(await sql_api.GetCountSendForProject(managers[i].dataValues.to_id,req.query.proj))
-        let time = await  sql_api.GetRespTimeForProject(managers[i].dataValues.to_id,req.query.proj)
+        messages.push(await sql_api.GetCountSendForProject(managers[i].dataValues.to_id,req.query.proj, moment().subtract(40,'years'), moment()))
+        let time = await  sql_api.GetRespTimeForProject(managers[i].dataValues.to_id,req.query.proj, moment().subtract(40,'years'), moment())
         if (time.length == 0) {
             timeresp.push(0)
         }
