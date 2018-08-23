@@ -353,15 +353,44 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
         result4.push(res4)
     }
     var csv = 'Вопрос,Время вопроса,Ответ,Время ответа\n';
+
     for (let i = 0; i < result1[0].length; i++) {
-        csv += result2[i][0].dataValues.text.replace(/,/g, ';') + ',' + result2[i][0].dataValues.createdAt + ',' +
-            result1[0][i].dataValues.text.replace(/,/g, ';') + ',' + result1[0][i].dataValues.createdAt
+        let str1 = 'Сообщение не найдено'
+        let str2 = 'Сообщение не найдено'
+        let str3 = 'Сообщение не найдено'
+        let str4 = 'Сообщение не найдено'
+
+        if(result2[i][0].dataValues != undefined) {
+            str1 = result2[i][0].dataValues.text.replace(/,/g, ';')
+            str2 = result2[i][0].dataValues.createdAt
+
+        }
+        if(result1[0][i].dataValues != undefined) {
+            str3 = result1[0][i].dataValues.text.replace(/,/g, ';')
+            str4 = result1[0][i].dataValues.createdAt
+        }
+
+
+        csv += str1 + ',' + str2 + ',' + str3 + ',' + str4
         csv += "\n";
     }
     csv += 'Дальше,из,личных,сообщений\n'
     for (let i = 0; i < result3[0].length; i++) {
-        csv += result4[i][0].dataValues.text.replace(/,/g, ';') + ',' + result4[i][0].dataValues.createdAt + ',' +
-            result3[0][i].dataValues.text.replace(/,/g, ';') + ',' + result3[0][i].dataValues.createdAt
+        let str1 = 'Сообщение не найдено'
+        let str2 = 'Сообщение не найдено'
+        let str3 = 'Сообщение не найдено'
+        let str4 = 'Сообщение не найдено'
+
+        if(result4[i][0].dataValues != undefined) {
+            str1 = result4[i][0].dataValues.text.replace(/,/g, ';')
+            str2 = result4[i][0].dataValues.createdAt
+
+        }
+        if(result3[0][i].dataValues != undefined) {
+            str3 = result3[0][i].dataValues.text.replace(/,/g, ';')
+            str4 = result3[0][i].dataValues.createdAt
+        }
+        csv += str1 + ',' + str2 + ',' + str3 + ',' + str4
         csv += "\n";
     }
     return csv;
