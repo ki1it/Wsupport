@@ -96,7 +96,7 @@ html(lang='en')
                                     th Проект
                                     th Вопрос
                                     th Ответ
-                                    th Время ответа
+                                    th Время ответа,сек
                             tbody
                                 -for (let i = 0; i < projects.length; i++)
                                     +rowsTable(projectNames[i][0].dataValues.name,messget[i], messsend[i],Math.round(timeresp[i]))
