@@ -11,12 +11,12 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "jquery": "latest",
     "moment": "latest",
     "morgan": "~1.9.0",
     "pg": "^7.4.3",
     "pug": "2.0.0-beta11",
     "sequelize": "^4.38.0",
-    "tglib": "^2.0.1",
-    "jquery": "latest"
+    "tglib": "^2.0.1"
   }
 }

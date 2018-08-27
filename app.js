@@ -34,7 +34,7 @@ app.use('/filter', function (req, res) {
     {
         managerRoute.setAllPeriod(true)
         managerRoute.setDate1(moment().subtract(40,'years'))
-        managerRoute.setDate2(moment().add(1,'days'))
+        managerRoute.setDate2(moment().add(2,'days'))
     }else{
         managerRoute.setAllPeriod(false)
         managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
@@ -58,7 +58,7 @@ app.use('/download',async function (req, res) {
     if (req.body.dates=="")
     {
         messdown = await sql_api.DownloadMessPersonForTime(tel,
-            moment().subtract(40,'years'), moment().add(1,'days'))
+            moment().subtract(40,'years'), moment().add(2,'days'))
     }else {
         messdown = await sql_api.DownloadMessPersonForTime(tel,
             moment(dates[0], 'DD.MM.YYYY'), moment(dates[1], 'DD.MM.YYYY'))

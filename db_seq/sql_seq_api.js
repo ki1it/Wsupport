@@ -157,7 +157,7 @@ async function GetPersonName(tel_number) {
 async function GetMessForManagerLs(tel, startDate, finDate) {
     let result = await db.Message.count({
         distinct: true,
-        col: "id",
+        col: "message_id",
         where: {
             createdAt: {
                 [Op.gt]: startDate.toDate(),
@@ -167,6 +167,7 @@ async function GetMessForManagerLs(tel, startDate, finDate) {
             to_id: tel
         }
     })
+    console.log(result)
     return result
 }
 
@@ -192,7 +193,8 @@ async function GetAllMessagesLs() {
         order: ['to_id']
 
     })
-//console.log(result);
+    console.log(moment())
+console.log(result);
     return result
 }
 
@@ -206,6 +208,7 @@ async function GetAllMessagesGroup() {
         order: ['to_id']
 
     })
+    console.log(result)
     return result;
 }
 
@@ -252,6 +255,7 @@ async function GetRespTime() {
             .catch((err) => {
                 console.log(err)
             })
+    console.log(result)
     return result;
 }
 
@@ -275,6 +279,23 @@ async function GetManagers() {
         .catch((err) => {
             console.log(err)
         })
+
+    return result;
+}
+async function GetManagers1() {
+    let result = await db.Worker.findAll({
+        attributes: ['Message_in_Group.to_id', 'Worker.name', [sequelize.fn('count', sequelize.col('Message_in_Group.chat_id')), "count"]],
+        include: [{model: db.Message_in_Group, as: 'Message_in_Group'}],
+        group: ['tel_number'],
+        order: ['tel_number'],
+        where: {
+            'Message_in_Group.from_tp': true
+        }
+    })
+        .catch((err) => {
+            console.log(err)
+        })
+
     return result;
 }
 

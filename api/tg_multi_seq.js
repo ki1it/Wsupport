@@ -30,12 +30,15 @@ async function initClients() {
 
 async function call() {
     const clients = await initClients()
+
+    //const chat2 = await clients.agent_tp0.tg.getChat({ chat_id: '-1001006653226' })
+
     console.log('telegram loaded')
     for (const cl in clients) {
         console.log(cl,' loaded')
         //if (!object.hasOwnProperty(key)) continue;
         clients[cl].registerCallback('td:update', async (update) => {
-            if (update['@type'] === 'updateNewMessage') {
+            if (update['@type'] === 'updateNewMessage' && update['message']['content']['@type'] === 'messageText') {
                 let repl_time = undefined
 
                 console.log('Got update:', JSON.stringify(update, null, 2))
@@ -89,8 +92,9 @@ async function call() {
                         }
                     }).then(async function (res) {
                         if (res.length === 0) {
+                            let name = await clients[cl].tg.getChat({ chat_id: update['message']['chat_id'] })
                             await db.Project.create({
-                                name:'Проект без названия',
+                                name:name.title,
                                 chat_id: update['message']['chat_id']
                             })
 
