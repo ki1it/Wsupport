@@ -11,7 +11,7 @@ async function GetManagers() {
 //console.log(result);
     return result;
 }
-GetManagers()
+
 async function GetAllMessagesGroup() {
     let result = await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id),new_schema.messages_group.to_id' +
         ' from new_schema.messages_group,new_schema.list_sup_workers where from_tp=true group by to_id order by to_id');
