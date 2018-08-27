@@ -14,7 +14,7 @@ var $ = require("jquery");
 var months = '[0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0]';
 var date1 = moment().subtract(7,'days')
 var date2 = moment()
-var allPeriod
+var allPeriod = false
 var current_tel = undefined
 function get_tel()
 {

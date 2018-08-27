@@ -20,9 +20,9 @@ router.get('', async function(req, res, next) {
         else
             timeresp.push(time[0].dataValues.avg)
     }
-        var proj =  await sql_api.GetProjectName(req.query.proj);
+        let proj =  await sql_api.GetProjectName(req.query.proj);
         res.render('projectstatistics', {
-            zagolovok: 'Статистика по ' + proj,
+            zagolovok: 'Статистика по ' + proj["0"].dataValues.name,
             managerName: managerName,
             messages: messages,
             timeresp: timeresp,
