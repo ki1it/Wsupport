@@ -303,6 +303,7 @@ async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
 
     let result = []
     let datetemp = startDate.clone()
+    datetemp.startOf('day')
     for (let i = 0; i <= cou; i++) {
 
         let res = await db.Message_in_Group.count({
