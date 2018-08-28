@@ -339,7 +339,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
     startDate.startOf('day')
     finDate.endOf('day')
     let res1 = await db.Message_in_Group.findAll({
-        attributes: ['reply_to', 'text', 'createdAt'],
+        attributes: ['reply_to', 'text', 'createdAt', 'chat_id'],
         where: {
             to_id: tel,
             //reply_to: {[Op.ne]: 0},
@@ -401,13 +401,15 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
             })
         result4.push(res4)
     }
-    var csv = 'Вопрос,Время вопроса,Ответ,Время ответа\n';
+    var csv = 'Вопрос,Время вопроса,Ответ,Время ответа,Чат\n';
 
     for (let i = 0; i < result1[0].length; i++) {
         let str1 = 'Сообщение не найдено'
         let str2 = 'Сообщение не найдено'
         let str3 = 'Сообщение не найдено'
         let str4 = 'Сообщение не найдено'
+        let str5 = await  GetProjectName( result1[0][i].dataValues.chat_id)
+        str5 = str5["0"].dataValues.name
 
         if(result2[i][0] != undefined) {
             str1 = result2[i][0].dataValues.text.replace(/,/g, ';')
@@ -420,7 +422,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
         }
 
 
-        csv += str1 + ',' + str2 + ',' + str3 + ',' + str4
+        csv += str1 + ',' + str2 + ',' + str3 + ',' + str4 + ',' + str5
         csv += "\n";
     }
     csv += 'Дальше,из,личных,сообщений\n'
