@@ -336,11 +336,13 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
     let result2 = []
     let result3 = []
     let result4 = []
+    startDate.startOf('day')
+    finDate.endOf('day')
     let res1 = await db.Message_in_Group.findAll({
         attributes: ['reply_to', 'text', 'createdAt'],
         where: {
             to_id: tel,
-            reply_to: {[Op.ne]: 0},
+            //reply_to: {[Op.ne]: 0},
             createdAt: {
 
                 [Op.gt]: startDate.toDate(),
@@ -372,7 +374,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
         attributes: ['reply_to', 'text', 'createdAt'],
         where: {
             to_id: tel,
-            reply_to: {[Op.ne]: 0},
+            //reply_to: {[Op.ne]: 0},
             createdAt: {
                 [Op.gt]: startDate.toDate(),
                 [Op.lt]: finDate.toDate()
