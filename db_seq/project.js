@@ -9,6 +9,10 @@ const Project = sequelize.define('Projects', {
     chat_id: {
         type: Sequelize.BIGINT,
         unique:true
-    }
+    },
+    invite_link: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
 });
 module.exports = Project;

@@ -93,9 +93,17 @@ async function call() {
                     }).then(async function (res) {
                         if (res.length === 0) {
                             let name = await clients[cl].tg.getChat({ chat_id: update['message']['chat_id'] })
+                            let link = await clients[cl].fetch({
+                                '@type': 'getSupergroupFullInfo',
+                                'supergroup_id': name.type.supergroup_id,
+
+                            })
+                                .catch(e =>
+                                    console.error(e))
                             await db.Project.create({
                                 name:name.title,
-                                chat_id: update['message']['chat_id']
+                                chat_id: update['message']['chat_id'],
+                                invite_link: link.invite_link
                             })
 
                         }
