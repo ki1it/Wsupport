@@ -8,12 +8,12 @@ html(lang='en')
           div(class="uk-card uk-card-default uk-card-small uk-card-body")
             div(class="uk-width-1-1" value=chatID)
                 input(placeholder=namee class="uk-form-blank uk-width-small uk-input inp")
-            div(uk-grid)
+            div(uk-grid class="uk-grid")
               div(class="uk-width-1-2@m")
-                a(href=InvLink) Открыть чат
-              div(class="uk-width-1-2@m right")
-                a(href="projectstatistics?proj="+chatID)
-                  span(uk-icon="icon:  more-vertical")
+                if InvLink!==''
+                  a(href=InvLink) Открыть
+                br
+                a(href="projectstatistics?proj="+chatID) Подробнее
   body
     div.uk-container
       include header.pug
