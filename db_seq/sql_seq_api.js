@@ -299,7 +299,7 @@ async function GetManagers1() {
     return result;
 }
 
-async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
+async function GetMessForPersonForTimeDays(tel, startDate, finDate, cou) {
 
     let result = []
     let datetemp = startDate.clone()
@@ -330,6 +330,35 @@ async function GetMessForPersonForTime(tel, startDate, finDate, cou) {
     return result;
 }
 
+async function GetMessForPersonForTimeHours(tel, startDate) {
+
+    let result = []
+    let datetemp = startDate.clone()
+    for (let i = 0; i <= 24; i++) {
+
+        let res = await db.Message_in_Group.count({
+            distinct: true,
+            col: 'message_id',
+            where: {
+                to_id: tel,
+                createdAt: {
+                    //[Op.gt]:
+
+                    [Op.gt]: datetemp.toDate(),
+                    [Op.lt]: datetemp.add(1, 'h').toDate()
+                },
+                from_tp: true
+
+
+            }
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+        result.push(res)
+    }
+    return result;
+}
 async function DownloadMessPersonForTime(tel, startDate, finDate) {
     const Op = Sequelize.Op;
     let result1 = []
@@ -462,6 +491,7 @@ module.exports.GetManagers = GetManagers
 module.exports.GetAllMessagesGroup = GetAllMessagesGroup
 module.exports.GetAllMessagesLs = GetAllMessagesLs
 module.exports.GetPersonId = GetPersonId
-module.exports.GetMessForPersonForTime = GetMessForPersonForTime
+module.exports.GetMessForPersonForTimeDays = GetMessForPersonForTimeDays
 module.exports.ChangeName = ChangeName
 module.exports.DownloadMessPersonForTime = DownloadMessPersonForTime
+module.exports.GetMessForPersonForTimeHours = GetMessForPersonForTimeHours

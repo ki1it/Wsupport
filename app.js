@@ -30,17 +30,22 @@ app.use('/manager', managerRoute);
 app.use('/projectstatistics', projstatRoute);
 app.use('/filter', function (req, res) {
     let dates = req.body.dates.split('-')
-    if (req.body.dates=="")
-    {
-        managerRoute.setAllPeriod(true)
-        managerRoute.setDate1(moment().subtract(40,'years'))
-        managerRoute.setDate2(moment().add(2,'days'))
-    }else{
-        managerRoute.setAllPeriod(false)
-        managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
-        managerRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
+    if (dates.length===1){
+        managerRoute.setSortday(true)
+        managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY').startOf('day'))
+        managerRoute.setDate2(moment(dates[0], 'DD.MM.YYYY').endOf('day'))
+    }else {
+        managerRoute.setSortday(false)
+        if (req.body.dates == "") {
+            managerRoute.setAllPeriod(true)
+            managerRoute.setDate1(moment().subtract(40, 'years'))
+            managerRoute.setDate2(moment().add(2, 'days'))
+        } else {
+            managerRoute.setAllPeriod(false)
+            managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
+            managerRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
+        }
     }
-
     res.redirect(req.headers.referer)
 });
 app.use('/changename',async function (req, res) {

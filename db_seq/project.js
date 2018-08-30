@@ -14,5 +14,11 @@ const Project = sequelize.define('Projects', {
         type: Sequelize.STRING,
         allowNull: true
     },
+    hidden:{
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+
+    }
 });
 module.exports = Project;

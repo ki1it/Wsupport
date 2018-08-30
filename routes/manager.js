@@ -11,7 +11,7 @@ var $ = require("jquery");
 // var quesProjects = ['чо?'];
 // var ansProjects = ['не знаю'];
 // var timeAnsProjects = ['долго'];
-var months = '[0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0]';
+var SortDay = false
 var date1 = moment().subtract(7,'days')
 var date2 = moment()
 var allPeriod = false
@@ -23,6 +23,9 @@ function get_tel()
 /* GET manager page. */
 function setAllPeriod(state){
     allPeriod = state
+}
+function setSortday(state){
+    SortDay = state
 }
 function setDate1(date){
     date1 = date
@@ -44,36 +47,51 @@ router.get('', async function(req, res, next) {
     let messget = []
     let messsend = []
     let timeresp = []
-    let inputtext = undefined
+    let inputtext = ''
     if(allPeriod===false) {
         inputtext = date1.format('DD.MM.YYYY') + '-' + date2.format('DD.MM.YYYY')
     }else{
         inputtext = ''
     }
+    if(SortDay===true) {
+        inputtext = date1.format('DD.MM.YYYY')
+    }
     let countAllMes = await sql_api.GetMessForManager(current_tel, date1, date2)
     let countAllMesLs = await sql_api.GetMessForManagerLs(current_tel,date1, date2)
     let cou = date2.diff(date1,'days')
     let chartmess = undefined
-    if(allPeriod===true){
-        chartmess = await sql_api.GetMessForPersonForTime(current_tel, moment().subtract(30,'days'), moment(), 30)
-    }
-    else {
-        chartmess = await sql_api.GetMessForPersonForTime(current_tel, date1, date2, cou)
+    if(SortDay===true) {
+        chartmess = await sql_api.GetMessForPersonForTimeHours(current_tel, date1)
+    }else {
+        if (allPeriod === true) {
+            chartmess = await sql_api.GetMessForPersonForTimeDays(current_tel, moment().subtract(30, 'days'), moment(), 30)
+        }
+        else {
+            chartmess = await sql_api.GetMessForPersonForTimeDays(current_tel, date1, date2, cou)
+        }
     }
     //let chartmess  = [1,2,3,4,5,6,7,5,6,4,4,44,6,3,3,5,5,6,3]
     let days = []
     let datetemp = undefined
-    if(allPeriod===false) {
+    if(SortDay===true) {
         datetemp = date1.clone()
-        for (let i = 0; i <= cou; i++) {
-            days.push('\'' + datetemp.format("MMM Do YY").toString() + '\'')
-            datetemp.add("days", 1)
+        for (let i = 0; i <= 24; i++) {
+            days.push('\'' + datetemp.format("LT").toString() + '\'')
+            datetemp.add("h", 1)
         }
-    }else{
-        datetemp = moment().subtract(30,'days')
-        for (let i = 0; i <= 30; i++) {
-            days.push('\'' + datetemp.format("MMM Do YY").toString() + '\'')
-            datetemp.add("days", 1)
+    }else {
+        if (allPeriod === false) {
+            datetemp = date1.clone()
+            for (let i = 0; i <= cou; i++) {
+                days.push('\'' + datetemp.format("MMM Do YY").toString() + '\'')
+                datetemp.add("days", 1)
+            }
+        } else {
+            datetemp = moment().subtract(30, 'days')
+            for (let i = 0; i <= 30; i++) {
+                days.push('\'' + datetemp.format("MMM Do YY").toString() + '\'')
+                datetemp.add("days", 1)
+            }
         }
     }
     days = '['+days.toString()+']'
@@ -105,7 +123,6 @@ router.get('', async function(req, res, next) {
         projects: projects,
         countAllMes: countAllMes,
         countAllMesLs: countAllMesLs,
-        months: months,
         projectNames: projectsNames,
         messget: messget,
         messsend: messsend,
@@ -126,3 +143,4 @@ module.exports.setDate2 = setDate2
 module.exports.get_tel = get_tel
 module.exports.download = download
 module.exports.setAllPeriod = setAllPeriod
+module.exports.setSortday = setSortday
