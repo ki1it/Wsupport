@@ -25,11 +25,10 @@ html(lang='en')
                   th Менеджер
                   th Кол-во ответов в группах
                   th Кол-во ответов в лс
-                  th Кол-во проектов
                   th СР. Время ответа, сек
               tbody
               - for(var i=0; i<managers.length; i++)
-                +rowTable(managers[i].dataValues.Worker.dataValues.name, messgr[i], messls[i], managers[i].dataValues.count, Math.round( timeresp[i]))
+                +rowTable(managers[i].dataValues.Worker.dataValues.name, messgr[i], messls[i],  Math.round( timeresp[i]))
 
     include footer.pug
 

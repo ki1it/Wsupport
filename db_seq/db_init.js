@@ -13,8 +13,8 @@ Worker.hasMany(Message, {foreignKey: 'to_id',sourceKey: 'tel_number'});
 Worker.hasMany(Message_in_Group, {foreignKey: 'to_id',sourceKey: 'tel_number'});
 Project.hasMany(Message_in_Group, {foreignKey: 'chat_id',sourceKey: 'chat_id'});
 Message_in_Group.belongsTo(Worker,{foreignKey: 'to_id',targetKey: 'tel_number'})
-Message.belongsTo(Worker, {foreignKey: 'to_id',sourceKey: 'tel_number'})
-Message_in_Group.belongsTo(Project, {foreignKey: 'chat_id',sourceKey: 'chat_id'})
+Message.belongsTo(Worker, {foreignKey: 'to_id',targetKey: 'tel_number'})
+Message_in_Group.belongsTo(Project, {foreignKey: 'chat_id',targetKey: 'chat_id'})
 async function init() {
     // await Worker.sync({force:true});
     // await Project.sync({force:true});

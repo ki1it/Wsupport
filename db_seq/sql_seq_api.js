@@ -133,11 +133,13 @@ async function GetMessForManager(tel,startDate,finDate) {
     let result = await db.Message_in_Group.count({
         distinct: true,
         col: "id",
+        include: [{model: db.Project, as: 'Project'}],
         where: {
             createdAt: {
                 [Op.gt]: startDate.toDate(),
                 [Op.lt]: finDate.toDate()
             },
+            '$Project.hidden$':false,
             from_tp: true,
             to_id: tel
         }
@@ -208,10 +210,12 @@ console.log(result);
 async function GetAllMessagesGroup() {
     let result = await db.Message_in_Group.findAll({
         attributes: ['to_id', [sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('message_id'))), "count"]],
+        include: [{model: db.Project, as: 'Project'}],
         where: {
+            '$Project.hidden$':false,
             from_tp: true
         },
-        group: ['to_id'],
+        group: ['to_id','Project.id'],
         order: ['to_id']
 
     })
@@ -234,10 +238,12 @@ async function GetPersonId(name) {
 async function GetProjectsById(tel) {
     let result = await
         db.Message_in_Group.findAll({
-            attributes: ['chat_id'],
-            group: ['chat_id'],
-            where: {
 
+            attributes: ['chat_id'],
+            include: [{model: db.Project, as: 'Project'}],
+            group: ['Message_in_Group.chat_id','Project.id'],
+            where: {
+                '$Project.hidden$':false,
                 to_id: tel
             }
         })
@@ -253,10 +259,12 @@ async function GetRespTime() {
     let result = await
         db.Message_in_Group.findAll({
             attributes: ['to_id', [sequelize.fn('AVG', sequelize.col('react_time')), "avg"]],
+            include: [{model: db.Project, as: 'Project'}],
             where: {
+                '$Project.hidden$':false,
                 from_tp: true
             },
-            group: ['to_id'],
+            group: ['to_id','Project.id'],
             order: ['to_id']
         })
             .catch((err) => {
@@ -276,10 +284,11 @@ async function GetRespTime() {
 async function GetManagers() {
     let result = await db.Message_in_Group.findAll({
         attributes: ['Message_in_Group.to_id', 'Worker.name', [sequelize.fn('count', sequelize.col('Message_in_Group.chat_id')), "count"]],
-        include: [{model: db.Worker, as: 'Worker'}],
-        group: ['to_id', 'name', 'Worker.id'],
+        include: [{model: db.Worker, as: 'Worker'},{model: db.Project, as: 'Project'}],
+        group: ['to_id', 'Worker.name', 'Worker.id', 'Project.id'],
         order: ['to_id'],
         where: {
+            '$Project.hidden$':false,
             from_tp: true
         }
     })
@@ -316,8 +325,10 @@ async function GetMessForPersonForTimeDays(tel, startDate, finDate, cou) {
         let res = await db.Message_in_Group.count({
             distinct: true,
             col: 'message_id',
+            include: [{model: db.Project, as: 'Project'}],
             where: {
                 to_id: tel,
+                '$Project.hidden$':false,
                 createdAt: {
                     //[Op.gt]:
 
@@ -346,6 +357,7 @@ async function GetMessForPersonForTimeHours(tel, startDate) {
         let res = await db.Message_in_Group.count({
             distinct: true,
             col: 'message_id',
+            include: [{model: db.Project, as: 'Project'}],
             where: {
                 to_id: tel,
                 createdAt: {
@@ -354,6 +366,7 @@ async function GetMessForPersonForTimeHours(tel, startDate) {
                     [Op.gt]: datetemp.toDate(),
                     [Op.lt]: datetemp.add(1, 'h').toDate()
                 },
+                '$Project.hidden$':false,
                 from_tp: true
 
 
