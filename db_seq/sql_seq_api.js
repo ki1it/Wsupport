@@ -6,7 +6,21 @@ const Op = Sequelize.Op;
 
 // получить проекты
 async function GetProjects() {
-    let result = await db.Project.findAll();
+    let result = await db.Project.findAll({
+        where: {
+            hidden: false
+        }
+    });
+    return result;
+}
+async function GetProjectsHideen() {
+    let result = await db.Project.findAll({
+        where: {
+            hidden: true
+        }
+        }
+
+    );
     return result;
 }
 
@@ -27,13 +41,6 @@ async function ChangeName(newName, ch) {
         .catch((err) => {
             console.log(err)
         });
-    // let result =  await db.Project.update(
-    //  {name: newName},
-    //     {where:
-    //             {chat_id: ch}})
-    //     .catch((err) => {
-    //         console.log(err)
-    //     });
     return result;
 }
 
@@ -476,6 +483,45 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
     return csv;
 }
 
+async function hide_project(ch) {
+    let result = await db.Project.update({
+            hidden: true,
+        }, {
+            where: {
+                chat_id: parseInt(ch)
+            },
+            returning: true,
+            plain: true
+        }
+    )
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    return result;
+}
+async function show_project(ch) {
+    let result = await db.Project.update({
+            hidden: false,
+        }, {
+            where: {
+                chat_id: parseInt(ch)
+            },
+            returning: true,
+            plain: true
+        }
+    )
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    return result;
+}
+
 module.exports.GetProjects = GetProjects
 module.exports.GetMessForManagerLs = GetMessForManagerLs
 module.exports.GetPersonName = GetPersonName
@@ -495,3 +541,6 @@ module.exports.GetMessForPersonForTimeDays = GetMessForPersonForTimeDays
 module.exports.ChangeName = ChangeName
 module.exports.DownloadMessPersonForTime = DownloadMessPersonForTime
 module.exports.GetMessForPersonForTimeHours = GetMessForPersonForTimeHours
+module.exports.hide_project = hide_project
+module.exports.show_project = show_project
+module.exports.GetProjectsHideen = GetProjectsHideen

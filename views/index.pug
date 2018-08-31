@@ -14,6 +14,12 @@ html(lang='en')
                   a(href=InvLink) Открыть
                 br
                 a(href="projectstatistics?proj="+chatID) Подробнее
+              div(class="uk-width-1-2@m right")
+                a(href="#" id="hide" onclick="$.ajax({type: 'POST', url: '/hide', data: 'chat_id="+chatID+"', });")
+                  span(uk-icon="icon:  trash")
+                a(href="#" id="showproj" onclick="$.ajax({type: 'POST', url: '/showproj', data: 'chat_id=" + chatID + "', });")
+                  span(uk-icon="icon:  move")
+
   body
     div.uk-container
       include header.pug
@@ -25,6 +31,16 @@ html(lang='en')
           div(uk-grid)
             - for(var i=0; i<projects.length; i++)
               +ProjSlot(projects[i].dataValues.name, projects[i].dataValues.chat_id, projects[i].dataValues.invite_link)
+          br
+          details
+            summary Скрытые проекты
+            p
+              div(uk-grid)
+                - for(var i=0; i<projects_hidden.length; i++)
+                  +ProjSlot(projects_hidden[i].dataValues.name, projects_hidden[i].dataValues.chat_id, projects_hidden[i].dataValues.invite_link)
+          br
+          br
+          br
 
 
 

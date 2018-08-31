@@ -53,6 +53,16 @@ app.use('/changename',async function (req, res) {
     sql_api.ChangeName(req.body.name,req.body.chat)
     console.log(req.body)
 })
+app.use('/hide',async function (req, res) {
+    var sql_api = require('./db_seq/sql_seq_api');
+    sql_api.hide_project(req.body.chat_id)
+    console.log(req.body)
+})
+app.use('/showproj',async function (req, res) {
+    var sql_api = require('./db_seq/sql_seq_api');
+    sql_api.show_project(req.body.chat_id)
+    console.log(req.body)
+})
 
 app.use('/download',async function (req, res) {
     let dates = req.body.dates.split('-')
