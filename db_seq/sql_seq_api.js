@@ -282,21 +282,41 @@ async function GetRespTime() {
 // }
 
 async function GetManagers() {
-    let result = await db.Message_in_Group.findAll({
-        attributes: ['Message_in_Group.to_id', 'Worker.name', [sequelize.fn('count', sequelize.col('Message_in_Group.chat_id')), "count"]],
-        include: [{model: db.Worker, as: 'Worker'},{model: db.Project, as: 'Project'}],
-        group: ['to_id', 'Worker.name', 'Worker.id', 'Project.id'],
-        order: ['to_id'],
-        where: {
-            '$Project.hidden$':false,
-            from_tp: true
-        }
+    let result = await db.Worker.findAll({
+        order: ['tel_number'],
     })
         .catch((err) => {
             console.log(err)
         })
 
+    // let result = await db.Message_in_Group.findAll({
+    //     attributes: ['Message_in_Group.to_id', 'Worker.name', [sequelize.fn('count', sequelize.col('Message_in_Group.chat_id')), "count"]],
+    //     include: [{model: db.Worker, as: 'Worker'},{model: db.Project, as: 'Project'}],
+    //     group: ['to_id', 'Worker.name', 'Worker.id', 'Project.id'],
+    //     order: ['to_id'],
+    //     where: {
+    //         '$Project.hidden$':false,
+    //         from_tp: true
+    //     }
+    // })
+    //     .catch((err) => {
+    //         console.log(err)
+    //     })
+
     return result;
+}
+
+async function GetProjeectsForManagers() {
+
+    let result = await db.Message_in_Group.findAll({
+        attributes: ['to_id', [sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('chat_id'))), "count"]],
+        group: ['to_id'],
+        order: ['to_id'],
+    })
+        .catch((err) => {
+                    console.log(err)
+                })
+    return result
 }
 async function GetManagers1() {
     let result = await db.Worker.findAll({
@@ -557,3 +577,4 @@ module.exports.GetMessForPersonForTimeHours = GetMessForPersonForTimeHours
 module.exports.hide_project = hide_project
 module.exports.show_project = show_project
 module.exports.GetProjectsHideen = GetProjectsHideen
+module.exports.GetProjeectsForManagers = GetProjeectsForManagers

@@ -14,9 +14,12 @@ router.get('/', async function (req, res, next) {
 
     let messagesLs = await sql_api.GetAllMessagesLs()
 
+    let projects = await sql_api.GetProjeectsForManagers()
+
     let messgr = []
     let messls = []
     let timeresp = []
+    let countProj = []
     for (let i = 0; i < managers.length; i++) {
 
         if (messagesGroup === undefined || messagesGroup[i] === undefined || messagesGroup.length === 0 || messagesGroup[i].length === 0) {
@@ -39,6 +42,11 @@ router.get('/', async function (req, res, next) {
         }
         else
             timeresp.push(srTimeAns[i].dataValues.avg)
+        if (projects === undefined || projects[i] === undefined || projects.length == 0 || projects[i].length == 0) {
+            countProj.push(0)
+        }
+        else
+            countProj.push(projects[i].dataValues.count)
     }
 
     res.render('statistics', {
@@ -46,6 +54,7 @@ router.get('/', async function (req, res, next) {
         // srTimeAns: srTimeAns,
         // messagesGroup: messagesGroup,
         // messagesLs: messagesLs,
+
         managers: managers,
         messgr: messgr,
         messls: messls,

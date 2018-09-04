@@ -100,6 +100,41 @@ async function call() {
                             })
                                 .catch(e =>
                                     console.error(e))
+                            // let test = await clients[cl].fetch({
+                            //     '@type': 'getSupergroupMembers',
+                            //     'offset': 0,
+                            //     'limit':1000,
+                            //     'supergroup_id': name.type.supergroup_id,
+                            //
+                            // })
+                            //     .catch(e =>
+                            //         console.error(e))
+                            // let test1 = await clients[cl].fetch({
+                            //     '@type': 'getUserFullInfo',
+                            //     'user_id': 181082604,
+                            //
+                            // })
+                            //     .catch(e =>
+                            //         console.error(e))
+                            // const { TextStruct } = require('tglib/structs')
+                            // let test2 = await clients[cl].tg.sendTextMessage({
+                            //     '$text': new TextStruct('`Hello` world!', 'textParseModeMarkdown'),
+                            //     'chat_id': 181082604,
+                            //     'disable_notification': true,
+                            //     'clear_draft': false,
+                            // })
+                            //     .catch(e =>
+                            //         console.error(e))
+                            // let test3 = await clients[cl].fetch({
+                            //         '@type': 'addChatMember',
+                            //         'user_id': 181082604,//igor
+                            //         'chat_id':-213406993,//offroad brn
+                            //         'forward_limit':0
+                            //
+                            //     })
+                            //         .catch(e =>
+                            //             console.error(e))
+
                             await db.Project.create({
                                 name:name.title,
                                 chat_id: update['message']['chat_id'],
