@@ -192,11 +192,12 @@ async function GetManagersByProjectId(chat_id) {
     return result
 }
 
-async function GetAllMessagesLs() {
+async function GetAllMessagesLs(tel) {
     let result = await db.Message.findAll({
         attributes: ['to_id', [sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('message_id'))), "count"]],
         where: {
-            from_tp: true
+            from_tp: true,
+            to_id: tel
         },
         group: ['to_id'],
         order: ['to_id']
@@ -207,13 +208,14 @@ console.log(result);
     return result
 }
 
-async function GetAllMessagesGroup() {
+async function GetAllMessagesGroup(tel) {
     let result = await db.Message_in_Group.findAll({
         attributes: ['to_id', [sequelize.fn('count', sequelize.fn('DISTINCT', sequelize.col('message_id'))), "count"]],
         include: [{model: db.Project, as: 'Project'}],
         where: {
             '$Project.hidden$':false,
-            from_tp: true
+            from_tp: true,
+            to_id : tel
         },
         group: ['to_id','Project.id'],
         order: ['to_id']
@@ -255,14 +257,16 @@ async function GetProjectsById(tel) {
     return result
 }
 
-async function GetRespTime() {
+async function GetRespTime(tel) {
     let result = await
         db.Message_in_Group.findAll({
-            attributes: ['to_id', [sequelize.fn('AVG', sequelize.col('react_time')), "avg"]],
+            attributes: ['to_id', [sequelize.fn('AVG', sequelize.col('react_time')), "avg"], [sequelize.fn('count', sequelize.col('message_id')), "count"]],
             include: [{model: db.Project, as: 'Project'}],
             where: {
                 '$Project.hidden$':false,
-                from_tp: true
+                from_tp: true,
+                to_id : tel,
+                react_time:{[Op.ne]: null}
             },
             group: ['to_id','Project.id'],
             order: ['to_id']
