@@ -3,13 +3,15 @@ html(lang='en')
     head
         include head.pug
     body
-        mixin rowTable(name, ans,vls, proj, srtime)
+        mixin rowTable(name, ans, chatID)
             tr
                 td #[a(href="manager?id=" + name) @#{name}]
                 td #{ans}
-                td #{vls}
-                td #{proj}
-                td #{srtime}
+                td #{chatID}
+                td #[a(href="#" id="hide" onclick="$.ajax({type: 'POST', url: '/delete', data: 'chat_id="+chatID+"', });")  #[span(uk-icon="icon:  trash")]]
+                //td #{vls}
+                //td #{proj}
+                //td #{srtime}
         div.uk-container
             include header.pug
         div.uk-container.main
@@ -19,16 +21,31 @@ html(lang='en')
                 div(class="uk-width-5-6@m uk-card uk-card-default uk-card-body")
                     h3 #{zagolovok}
                     div.uk-overflow-auto
-                        table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
-                            thead
-                                tr
-                                    th Менеджер
-                                    th Кол-во ответов в группах
-                                    th Кол-во ответов в лс
-                                    th СР. Время ответа, сек
-                            tbody
-                            - for(var i=0; i<managers.length; i++)
-                            +rowTable(managers[i].dataValues.name, messgr[i], messls[i], Math.round( timeresp[i]))
+                        form( action="/addmonkey", method="post"  enctype="application/json")
+                            div.uk-width-1-2
+                                input(class="uk-input" name='name' type="text" placeholder='Имя' required=true)
+                            div.uk-width-1-2
+                                input(class="uk-input" name='chat_id' type="text" placeholder='chat_id' required=true)
+                            br
+                            button(type="submit"  class="uk-button uk-button-primary top-margin"  href="#")
+                                span.ru Добавить
+                                span.en Add
+                        form( action="/calendar", method="post" class="form" id='calform' enctype="application/json")
+                            div.uk-width-1-2
+                                input(class="uk-input" name='dates' type="text", data-range="true", data-multiple-dates-separator="-", value = inputtext,  class="datepicker-here")
+                            button(type="submit" formaction="/filterMonkeys" class="uk-button uk-button-primary top-margin" id="filter" href="#")
+                                span.ru Фильтровать
+                                span.en Filter
+                    table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
+                        thead
+                            tr
+                                th Менеджер
+                                th Кол-во ответов в группах
+                                th Chat id
+                                th Удалить
+                        tbody
+                        - for(var i=0; i< list.length; i++)
+                            +rowTable(list[i].dataValues.name, mess[i], list[i].dataValues.chat_id)
 
         include footer.pug
 

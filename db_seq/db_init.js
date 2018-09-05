@@ -2,6 +2,7 @@ const Project = require('./project')
 const Message_in_Group = require('./message_in_group')
 const Message= require('./message')
 const Worker = require('./worker')
+const Monkey = require('./monkey')
 // const Raffle = require('Raffle')
 
 //list_projects.hasMany(messages_group, { foreignKey:'chat_id', sourceKey:'chat_id',  onUpdate: 'cascade', onDelete: 'cascade' })
@@ -24,6 +25,7 @@ async function init() {
     await Project.sync();
     await Message_in_Group.sync();
     await Message.sync();
+    await Monkey.sync()
 }
 
 (async function f() {
@@ -42,3 +44,4 @@ async function init() {
     module.exports.Message_in_Group = Message_in_Group
     module.exports.Message = Message
     module.exports.Worker = Worker
+    module.exports.Monkey = Monkey

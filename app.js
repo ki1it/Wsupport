@@ -30,6 +30,21 @@ app.use('/statistics', statisticsRoute);
 app.use('/monkeys', monkeysRoute);
 app.use('/manager', managerRoute);
 app.use('/projectstatistics', projstatRoute);
+app.use('/filterMonkeys', function (req, res) {
+    let dates = req.body.dates.split('-')
+
+        if (req.body.dates == "") {
+            monkeysRoute.setAllPeriod(true)
+            monkeysRoute.setDate1(moment().subtract(40, 'years'))
+            monkeysRoute.setDate2(moment().add(2, 'days'))
+        } else {
+            monkeysRoute.setAllPeriod(false)
+            monkeysRoute.setDate1(moment(dates[0], 'DD.MM.YYYY'))
+            monkeysRoute.setDate2(moment(dates[1], 'DD.MM.YYYY'))
+        }
+
+    res.redirect(req.headers.referer)
+});
 app.use('/filter', function (req, res) {
     let dates = req.body.dates.split('-')
     if (dates.length===1){
@@ -59,6 +74,18 @@ app.use('/hide',async function (req, res) {
     var sql_api = require('./db_seq/sql_seq_api');
     sql_api.hide_project(req.body.chat_id)
     console.log(req.body)
+})
+app.use('/delete',async function (req, res) {
+    var sql_api = require('./db_seq/sql_seq_api');
+    sql_api.DelMonkey(req.body.chat_id)
+    console.log(req.body)
+    res.redirect(req.headers.referer)
+})
+app.use('/addmonkey',async function (req, res) {
+    var sql_api = require('./db_seq/sql_seq_api');
+    sql_api.AddMonkey(req.body.name, req.body.chat_id)
+    console.log(req.body)
+    res.redirect(req.headers.referer)
 })
 app.use('/showproj',async function (req, res) {
     var sql_api = require('./db_seq/sql_seq_api');

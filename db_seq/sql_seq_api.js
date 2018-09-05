@@ -4,12 +4,30 @@ const sequelize = require('./pgbase-connector');
 var moment = require('moment');
 const Op = Sequelize.Op;
 
+async function AddMonkey(namee, chatid) {
+    await db.Monkey.create({
+        name: namee,
+        chat_id: chatid
+    })
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+}
+
 // получить проекты
 async function GetProjects() {
     let result = await db.Project.findAll({
         where: {
             hidden: false
         }
+    });
+    return result;
+}
+async function GetMonkeys() {
+    let result = await db.Monkey.findAll({
     });
     return result;
 }
@@ -127,8 +145,28 @@ async function GetRespTimeForProject(tel, chat_id, startDate, finDate) {
     return result
 }
 
-//GetRespTimeForProject('+79069624310', -1001300656234)
-//
+
+async function GetMonkeysMessById(chatid,startDate,finDate) {
+    let result = await db.Message_in_Group.count({
+        distinct: true,
+        col: "id",
+        include: [{model: db.Project, as: 'Project'}],
+        where: {
+            createdAt: {
+                [Op.gt]: startDate.toDate(),
+                [Op.lt]: finDate.toDate()
+            },
+            '$Project.hidden$':false,
+            sender_user_id:chatid
+        }
+    })
+        .catch((err) => {
+            console.log(err)
+        })
+    // await pgapi.pool.query('select count(DISTINCT new_schema.messages_group.id) from new_schema.messages_group where from_tp=true and to_id = $1', [tel]);
+    return result
+}
+
 async function GetMessForManager(tel,startDate,finDate) {
     let result = await db.Message_in_Group.count({
         distinct: true,
@@ -519,6 +557,21 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
     }
     return csv;
 }
+async function DelMonkey(chat) {
+    let result = await db.Monkey.destroy({
+            where: {
+                chat_id: parseInt(chat)
+            },
+        }
+    )
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    return result;
+}
 
 async function hide_project(ch) {
     let result = await db.Project.update({
@@ -582,3 +635,7 @@ module.exports.hide_project = hide_project
 module.exports.show_project = show_project
 module.exports.GetProjectsHideen = GetProjectsHideen
 module.exports.GetProjeectsForManagers = GetProjeectsForManagers
+module.exports.AddMonkey = AddMonkey
+module.exports.GetMonkeys = GetMonkeys
+module.exports.GetMonkeysMessById = GetMonkeysMessById
+module.exports.DelMonkey = DelMonkey
