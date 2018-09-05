@@ -7,6 +7,7 @@ var moment = require('moment');
 var indexRouter = require('./routes/index');
 var statisticsRoute =  require('./routes/statistics');
 var managerRoute = require('./routes/manager');
+var monkeysRoute = require('./routes/monkeys');
 var projstatRoute = require('./routes/projectstatistics');
 var db = require('./db_seq/db_init')
 var apitg = require('./api/tg_multi_seq')
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 apitg.call()
 app.use('/', indexRouter);
 app.use('/statistics', statisticsRoute);
+app.use('/monkeys', monkeysRoute);
 app.use('/manager', managerRoute);
 app.use('/projectstatistics', projstatRoute);
 app.use('/filter', function (req, res) {
