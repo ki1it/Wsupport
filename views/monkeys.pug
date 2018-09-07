@@ -8,7 +8,7 @@ html(lang='en')
                 td #[a(href="manager?id=" + name) @#{name}]
                 td #{ans}
                 td #{chatID}
-                td #[a(href="#" id="hide" onclick="$.ajax({type: 'POST', url: '/delete', data: 'chat_id="+chatID+"', });")  #[span(uk-icon="icon:  trash")]]
+                td #[a(href="/monkeys" id="hide" onclick="$.ajax({type: 'POST', url: '/delete', data: 'chat_id="+chatID+"', });")  #[span(uk-icon="icon:  trash")]]
                 //td #{vls}
                 //td #{proj}
                 //td #{srtime}
@@ -20,22 +20,23 @@ html(lang='en')
                     include menu.pug
                 div(class="uk-width-5-6@m uk-card uk-card-default uk-card-body")
                     h3 #{zagolovok}
-                    div.uk-overflow-auto
-                        form( action="/addmonkey", method="post"  enctype="application/json")
-                            div.uk-width-1-2
+                    div(uk-grid)
+                        form( action="/addmonkey" class='uk-grid' method="post"  enctype="application/json")
+                            div(class='uk-width-1-3@m')
                                 input(class="uk-input" name='name' type="text" placeholder='Имя' required=true)
-                            div.uk-width-1-2
+                            div(class='uk-width-1-3@m')
                                 input(class="uk-input" name='chat_id' type="text" placeholder='chat_id' required=true)
-                            br
-                            button(type="submit"  class="uk-button uk-button-primary top-margin"  href="#")
-                                span.ru Добавить
-                                span.en Add
-                        form( action="/calendar", method="post" class="form" id='calform' enctype="application/json")
-                            div.uk-width-1-2
-                                input(class="uk-input" name='dates' type="text", data-range="true", data-multiple-dates-separator="-", value = inputtext,  class="datepicker-here")
-                            button(type="submit" formaction="/filterMonkeys" class="uk-button uk-button-primary top-margin" id="filter" href="#")
-                                span.ru Фильтровать
-                                span.en Filter
+                            div(class='uk-width-1-3@m')
+                                button(type="submit"  class="uk-button uk-button-primary"  href="/monkeys")
+                                    span.ru Добавить
+                                    span.en Add
+                    div.uk-inline.top-margin
+                        form( action="/calendar" class='uk-inline.top-margin' method="post" class="form" id='calform' enctype="application/json")
+                            button(type="submit" formaction="/filterMonkeys" id="filter" class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: search")
+                            input(class="uk-input" name='dates' type="text", data-range="true", data-multiple-dates-separator="-", value = inputtext,  class="datepicker-here")
+                        //button(type="submit" formaction="/filterMonkeys" class="uk-button uk-button-primary top-margin" id="filter" href="#")
+                        //    span.ru Фильтровать
+                        //    span.en Filter
                     table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
                         thead
                             tr

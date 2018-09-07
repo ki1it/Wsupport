@@ -1423,19 +1423,19 @@ button.uk-icon:not(:disabled) {
   border-color: #e5e5e5;
 }
 /*
- * Placeholder  /// ИГОРЬ ТУТ НАПАКОСТИЛ
+ * Placeholder
  */
 .uk-input:-ms-input-placeholder {
   color: #999 !important;
 }
 .uk-input::placeholder {
-  color: #595959;
+  color: #999;
 }
 .uk-textarea:-ms-input-placeholder {
   color: #999 !important;
 }
 .uk-textarea::placeholder {
-  color: #595959;
+  color: #999;
 }
 /* Style modifier (`uk-input`, `uk-select` and `uk-textarea`)
  ========================================================================== */
@@ -1902,20 +1902,20 @@ select.uk-form-width-xsmall {
   color: #fff;
 } */
 .uk-button-primary {
-  background-color: #ffb12a;
-  color: #000;
+  background-color: #552BBD;
+  color: #fff;
   border: 1px solid transparent;
 }
 /* Hover + Focus */
 .uk-button-primary:hover,
 .uk-button-primary:focus {
-  background-color: #ffa405;
-  color: #000;
+  background-color: #552BBD;
+  color: #fff;
 }
 .uk-button-primary:active,
 .uk-button-primary.uk-active {
-  background-color: #ffa405;
-  color: #000;
+  background-color: #552BBD;
+  color: #fff;
 }
 /*
  * Secondary

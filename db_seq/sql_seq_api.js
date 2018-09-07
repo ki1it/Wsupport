@@ -451,6 +451,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
     finDate.endOf('day')
     let res1 = await db.Message_in_Group.findAll({
         attributes: ['reply_to', 'text', 'createdAt', 'chat_id'],
+        include: [{model: db.Project, as: 'Project'}],
         where: {
             to_id: tel,
             //reply_to: {[Op.ne]: 0},
@@ -459,6 +460,7 @@ async function DownloadMessPersonForTime(tel, startDate, finDate) {
                 [Op.gt]: startDate.toDate(),
                 [Op.lt]: finDate.toDate()
             },
+            '$Project.hidden$':false,
             from_tp: true
 
 

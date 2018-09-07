@@ -26,13 +26,32 @@ async function initClients() {
     }
 
     return clients
+
 }
 
 async function call() {
     const clients = await initClients()
 
     //const chat2 = await clients.agent_tp0.tg.getChat({ chat_id: '-1001006653226' })
-
+    // const Sequelize = require('sequelize');
+    // const Op = Sequelize.Op;
+    // let restest = await db.Message_in_Group.findAll()
+    //
+    // for (let i=0;i < restest.length; i++)
+    // {
+    //     console.log(restest.length)
+    //     let g = await db.Message_in_Group.destroy({
+    //         where:{
+    //             message_id: restest[i].dataValues.message_id,
+    //             id:{[Op.ne]: restest[i].dataValues.id},
+    //             text: restest[i].dataValues.text
+    //         }
+    //     })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         });
+    //     restest = await db.Message_in_Group.findAll()
+    // }
     console.log('telegram loaded')
     for (const cl in clients) {
         console.log(cl,' loaded')
@@ -158,18 +177,28 @@ async function call() {
                     //         console.log(err, res)
                     //     })
                     // }
-                    await db.Message_in_Group.create({
-                        message_id: update['message']['id'],
-                        sender_user_id: update['message']['sender_user_id'],
-                        data: new Date(update['message']['date'] * 1000),
-                        text: update['message']['content']['text']['text'],
-                        to_id: clients[cl].options.auth.value,
-                        chat_id: update['message']['chat_id'],
-                        from_tp: update['message']['is_outgoing'],
-                        timest: update['message']['date'],
-                        react_time: repl_time,
-                        reply_to: update['message']['reply_to_message_id']
+
+
+                    let res = await db.Message_in_Group.findAll({
+                        where: {
+                            message_id: update['message']['id'],
+                            text: update['message']['content']['text']['text']
+                        }
                     })
+                    if(res.length===0) {
+                        await db.Message_in_Group.create({
+                            message_id: update['message']['id'],
+                            sender_user_id: update['message']['sender_user_id'],
+                            data: new Date(update['message']['date'] * 1000),
+                            text: update['message']['content']['text']['text'],
+                            to_id: clients[cl].options.auth.value,
+                            chat_id: update['message']['chat_id'],
+                            from_tp: update['message']['is_outgoing'],
+                            timest: update['message']['date'],
+                            react_time: repl_time,
+                            reply_to: update['message']['reply_to_message_id']
+                        })
+                    }
                     // await pgapi.pool.query('INSERT INTO new_schema.messages_group(id, sender_user_id, data, text, to_id, chat_id, from_tp, timestamp, react_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [update['message']['id'],
                     //     update['message']['sender_user_id'], new Date(update['message']['date'] * 1000), update['message']['content']['text']['text'],
                     //     clients[cl].options.auth.value, update['message']['chat_id'], update['message']['is_outgoing'], update['message']['date'], repl_time], (err, res) => {

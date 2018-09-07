@@ -58,7 +58,7 @@ ul li img {
     max-width: 492px !important;
     margin-left: 50px; }
 
-.uk-button.uk-button-primary.top-margin {
+.uk-button.uk-button-primary.top-margin, .top-margin {
     margin-top: 20px; }
 
 .uk-button.uk-button-primary, .uk-button.uk-button-primary:hover {

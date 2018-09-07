@@ -15,11 +15,22 @@ html(lang='en')
                 br
                 a(href="projectstatistics?proj="+chatID) Подробнее
               div(class="uk-width-1-2@m right")
-                a(href="#" id="hide" onclick="$.ajax({type: 'POST', url: '/hide', data: 'chat_id="+chatID+"', });")
+                a(href="/" id="hide" onclick="$.ajax({type: 'POST', url: '/hide', data: 'chat_id="+chatID+"', });")
                   span(uk-icon="icon:  trash")
-                a(href="#" id="showproj" onclick="$.ajax({type: 'POST', url: '/showproj', data: 'chat_id=" + chatID + "', });")
+      mixin ProjSlothid(namee, chatID, InvLink)
+        div(class="uk-width-1-4@m")
+          div(class="uk-card uk-card-default uk-card-small uk-card-body")
+            div(class="uk-width-1-1" value=chatID)
+              input(placeholder=namee class="uk-form-blank uk-width-small uk-input inp")
+            div(uk-grid class="uk-grid")
+              div(class="uk-width-1-2@m")
+                if InvLink !== ''
+                  a(href=InvLink) Открыть
+                br
+                a(href="projectstatistics?proj=" + chatID) Подробнее
+              div(class="uk-width-1-2@m right")
+                a(href="/" id="showproj" onclick="$.ajax({type: 'POST', url: '/showproj', data: 'chat_id=" + chatID + "', });")
                   span(uk-icon="icon:  move")
-
   body
     div.uk-container
       include header.pug
@@ -37,7 +48,7 @@ html(lang='en')
             p
               div(uk-grid)
                 - for(var i=0; i<projects_hidden.length; i++)
-                  +ProjSlot(projects_hidden[i].dataValues.name, projects_hidden[i].dataValues.chat_id, projects_hidden[i].dataValues.invite_link)
+                  +ProjSlothid(projects_hidden[i].dataValues.name, projects_hidden[i].dataValues.chat_id, projects_hidden[i].dataValues.invite_link)
           br
           br
           br

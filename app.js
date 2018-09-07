@@ -47,7 +47,7 @@ app.use('/filterMonkeys', function (req, res) {
 });
 app.use('/filter', function (req, res) {
     let dates = req.body.dates.split('-')
-    if (dates.length===1){
+    if (dates.length===1 && req.body.dates !== "" ){
         managerRoute.setSortday(true)
         managerRoute.setDate1(moment(dates[0], 'DD.MM.YYYY').startOf('day'))
         managerRoute.setDate2(moment(dates[0], 'DD.MM.YYYY').endOf('day'))
@@ -74,6 +74,7 @@ app.use('/hide',async function (req, res) {
     var sql_api = require('./db_seq/sql_seq_api');
     sql_api.hide_project(req.body.chat_id)
     console.log(req.body)
+    res.redirect(req.get('referer'))
 })
 app.use('/delete',async function (req, res) {
     var sql_api = require('./db_seq/sql_seq_api');
@@ -91,6 +92,7 @@ app.use('/showproj',async function (req, res) {
     var sql_api = require('./db_seq/sql_seq_api');
     sql_api.show_project(req.body.chat_id)
     console.log(req.body)
+    res.redirect(req.get('referer'))
 })
 
 app.use('/download',async function (req, res) {

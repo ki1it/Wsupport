@@ -24,13 +24,17 @@ html(lang='en')
                             p Отправлено сообщений в группах: #{countAllMes}
                             p Отправлено сообщений в лс: #{countAllMesLs}
                             form( action="/calendar", method="post" class="form" id='calform' enctype="application/json")
-                                input(name='dates' type="text", data-range="true", data-multiple-dates-separator="-", value = inputtext,  class="datepicker-here")
-                                button(type="submit" formaction="/filter" class="uk-button uk-button-primary top-margin" id="filter" href="#")
-                                    span.ru Фильтровать
-                                    span.en Filter
-                                button(type="submit" formaction="/download" class="uk-button uk-button-primary top-margin" id="download" href="#")
-                                    span.ru Скачать сообщения
-                                    span.en Download messages
+                                div.uk-inline
+                                    //a(type="submit" formaction="/filter" id="filter" class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: search")
+                                    button(type="submit" formaction="/filter" id="filter"  class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: search")
+                                    input(name='dates' type="text", data-range="true", data-multiple-dates-separator="-", value = inputtext,  class="datepicker-here uk-input")
+                                    //button(type="submit" formaction="/filter" class="uk-button uk-button-primary top-margin" id="filter" href="#")
+                                    //    span.ru Фильтровать
+                                    //    span.en Filter
+                                p #[button(type="submit" formaction="/download" id="download" href="#") #[span(class="uk-margin-small-right" uk-icon="icon: cloud-download")]Скачать сообщения]
+                                    //button(type="submit" formaction="/download" class="uk-button uk-button-primary top-margin" id="download" href="#")
+                                    //    span.ru Скачать сообщения
+                                    //    span.en Download messages
                             //p Ответов: #{countAns}
                             //p Ср. время ответа: #{srTime}
                         div(class="uk-width-2-3@m")
